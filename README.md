@@ -1,6 +1,7 @@
 # Project Neptune
 
 Web App for Post-Covid Times
+Visit it on: https://projectneptune-167d5.web.app
 
 ### Installation
  - Install [npm](https://www.npmjs.com/get-npm)
