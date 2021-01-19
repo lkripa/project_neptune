@@ -1,6 +1,6 @@
 # Project Neptune
 
-Web App for Post-Covid Times
+Web App for Post-Covid Times <br />
 Visit it on: https://projectneptune-167d5.web.app
 
 ### Installation
@@ -9,9 +9,9 @@ Visit it on: https://projectneptune-167d5.web.app
  - Run `npm install` within the main folder 
 
 ### Run code locally
-Simply run: `npm start`
+Simply run: `npm start` <br />
 Then checkout the website on `localhost:3000`
 
 ### Deploy code
-First build the code to make it smaller and unreadable: `npm run build`
+First build the code to make it smaller and unreadable: `npm run build` <br />
 Then deploy it with firebase (need to be setup and point to the `build` instead of the `public` folder)
