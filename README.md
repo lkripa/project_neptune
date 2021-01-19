@@ -9,7 +9,7 @@ Web App for Post-Covid Times
 
 ### Run code locally
 Simply run: `npm start`
-Then checkout the website on `localhost:3000` or so
+Then checkout the website on `localhost:3000`
 
 ### Deploy code
 First build the code to make it smaller and unreadable: `npm run build`
