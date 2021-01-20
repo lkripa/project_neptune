@@ -7,8 +7,8 @@ import './Main.css';
 class Main extends React.Component {
   render() {
     return (
-      <div>
-        <header className="App-header">
+      <div className="App">
+        <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             We're going to fly everywhere!
@@ -21,7 +21,7 @@ class Main extends React.Component {
           >
             Learn More
           </a>
-        </header>
+        </div>
         
       </div>
     );

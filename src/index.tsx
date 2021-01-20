@@ -6,7 +6,9 @@ import App from './App.jsx';
 import Footer from './Footer';
 import NavBar from './NavBar';
 import Main from './Main';
+import About from './About';
 
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import reportWebVitals from './testScripts/reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -15,14 +17,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
  */
 
 ReactDOM.render(
-  <React.StrictMode>
-    <>
-      <NavBar />
-      <App />
-      <Main />
-      <Footer />
-    </>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <NavBar />
+    <Switch>
+      <Route exact path="/">
+        <Main />
+        <App />
+        {/* <Footer /> */}
+      </Route>
+      <Route path="/about">
+        <About />
+        <Footer />
+      </Route>
+      <Route path="/contact">
+        <About />
+        <Footer />
+      </Route>
+    </Switch>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

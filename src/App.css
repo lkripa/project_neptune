@@ -10,7 +10,7 @@
 .sidebarStyle {
   display: inline-block;
   position: absolute;
-  top: 0;
+  top: 50;
   left: 0;
   margin: 12px;
   background-color: #404040;
