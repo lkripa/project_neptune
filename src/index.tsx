@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './index.css';
-import App from './App.jsx';
+// import App from './App.jsx';
 import Footer from './Footer';
 import NavBar from './NavBar';
 import Main from './Main';
@@ -17,12 +17,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
  */
 
 ReactDOM.render(
+  <React.StrictMode>
   <BrowserRouter>
     <NavBar />
     <Switch>
       <Route exact path="/">
         <Main />
-        <App />
         {/* <Footer /> */}
       </Route>
       <Route path="/about">
@@ -34,7 +34,8 @@ ReactDOM.render(
         <Footer />
       </Route>
     </Switch>
-  </BrowserRouter>,
+  </BrowserRouter>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

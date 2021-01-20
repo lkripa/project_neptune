@@ -1,13 +1,14 @@
 import React from 'react';
 import logo from './img/globe.png';
 import './Main.css';
+import App from './App.jsx';
 
 
 
 class Main extends React.Component {
   render() {
     return (
-      <div className="App">
+      <div className="Main">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
@@ -22,7 +23,7 @@ class Main extends React.Component {
             Learn More
           </a>
         </div>
-        
+        <App />
       </div>
     );
   }

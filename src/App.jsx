@@ -17,11 +17,12 @@ class App extends React.Component {
       lat: 34,
       zoom: 2
     };
+    this.myRef = React.createRef();
   }
   
   componentDidMount() {
     const map = new mapboxgl.Map({
-      container: this.mapContainer,
+      container: this.myRef.current, // this.mapContainer,
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [this.state.lng, this.state.lat],
       zoom: this.state.zoom
@@ -42,7 +43,8 @@ class App extends React.Component {
         {/* <div className='sidebarStyle'>
           <div>Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom: {this.state.zoom}</div>
         </div> */}
-        <div ref={el => this.mapContainer = el} className='mapContainer' />
+        <div ref={this.myRef}  // ref={el => this.mapContainer = el} 
+        className='mapContainer' />
       </div>
     )
   }
