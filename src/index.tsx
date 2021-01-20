@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './index.css';
-import App from './App';
+import App from './App.jsx';
 import Footer from './Footer'
 import NavBar from './NavBar'
 

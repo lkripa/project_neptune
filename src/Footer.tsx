@@ -1,9 +1,9 @@
 import React from 'react';
 import './Footer.css';
 
-import { FaLinkedinIn } from 'react-icons/fa';
-import { FaGithub } from 'react-icons/fa';
-import { FaEnvelope } from 'react-icons/fa';
+// import { FaLinkedinIn } from 'react-icons/fa';
+// import { FaGithub } from 'react-icons/fa';
+// import { FaEnvelope } from 'react-icons/fa';
 
 /**
  * This is the Footer component.
