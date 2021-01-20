@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 
 import './index.css';
 import App from './App.jsx';
-import Footer from './Footer'
-import NavBar from './NavBar'
+import Footer from './Footer';
+import NavBar from './NavBar';
+import Main from './Main';
 
 import reportWebVitals from './testScripts/reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,6 +19,7 @@ ReactDOM.render(
     <>
       <NavBar />
       <App />
+      <Main />
       <Footer />
     </>
   </React.StrictMode>,
