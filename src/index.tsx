@@ -1,12 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.css';
 import App from './App';
+import Footer from './Footer'
+import NavBar from './NavBar'
+
 import reportWebVitals from './testScripts/reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+/**
+ * This is the navigation component.
+ */
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <>
+      <NavBar />
+      <App />
+      <Footer />
+    </>
   </React.StrictMode>,
   document.getElementById('root')
 );

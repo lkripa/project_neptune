@@ -1,0 +1,19 @@
+.wide {
+    padding: .3em;
+    font-size: 2em;
+  }
+
+.footer {
+  position: absolute;
+  /* background-image: linear-gradient(to top, rgba(255,255,255,1) 40% , #282c34); */
+  bottom: 0;
+  height: 5vh;
+  /* background-color: #282c34; */
+  color: white; 
+  width: 100%;
+  font-size: 1em;
+  text-align: center;
+  align-items: flex-end;
+  justify-content: center;
+  /* padding: 1vh; */
+}
