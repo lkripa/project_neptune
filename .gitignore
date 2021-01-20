@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-/build
 
 # testing
 /coverage
@@ -27,5 +26,5 @@ yarn-error.log*
 
 #firebase
 .firebaserc
-firebase.json
 .firebase
+firebase.json
