@@ -19,3 +19,20 @@
   padding: 6px;
   font-weight: bold;
   }
+
+.marker {
+  border: none;
+  cursor: pointer;
+  height: 56px;
+  width: 56px;
+  background-image: url(./img/marker2.png);
+  background-color: rgba(0, 0, 0, 0);
+}
+.destination_marker {
+  border: none;
+  cursor: pointer;
+  height: 56px;
+  width: 56px;
+  background-image: url(./img/marker3.png);
+  background-color: rgba(0, 0, 0, 0);
+}
