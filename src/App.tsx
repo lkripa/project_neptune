@@ -8,9 +8,15 @@ import 'mapbox-gl/dist/mapbox-gl.css';
  */
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGtyaXBhIiwiYSI6ImNrazVpZHQ5OTBxa3kyd3FuMnoyYmVlZHAifQ.wxeraMVYC8zmS4rXERn4ng';
- 
-class App extends React.Component {
-  constructor(props) {
+interface locationProps {
+  lng: any;
+  lat: any;
+  zoom: any;
+}
+
+class App extends React.Component<{}, locationProps> {
+  private myRef: React.RefObject<HTMLInputElement>;
+  constructor(props: locationProps) {
     super(props);
     this.state = {
       lng: 5,

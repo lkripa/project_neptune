@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './img/globe.png';
 import './Main.css';
-import App from './App.jsx';
+import App from './App';
 
 
 
