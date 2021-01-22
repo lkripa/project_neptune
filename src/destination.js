@@ -3,20 +3,19 @@ export var destinations =
     "type": "FeatureCollection",
     "features": [
       {
-       //    HAWAII
+       //    CALIFORNIA
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -154.9158300,
-            19.5430600
+             -118.243683,34.052235
           ]
         },
         "properties": {
         //   "phoneFormatted": "",
         //   "phone": "",
         //   "address": "",
-          "city": "Hawaiian Beach",
+          "city": "Los Angeles",
           "country": "USA",
         //   "crossStreet": "",
         //   "postalCode": "",

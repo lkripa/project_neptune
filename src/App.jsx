@@ -11,6 +11,7 @@ import { greatCircle, point } from '@turf/turf';
  */
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGtyaXBhIiwiYSI6ImNrazVpZHQ5OTBxa3kyd3FuMnoyYmVlZHAifQ.wxeraMVYC8zmS4rXERn4ng';
+// TODO  set max zoom out
 
 class App extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class App extends React.Component {
     this.state = {
       lng: 5,
       lat: 34,
-      zoom: 2
+      zoom: 1.58
     };
     this.myRef = React.createRef();
   }
@@ -111,9 +112,12 @@ class App extends React.Component {
           map.removeSource('flight_lines')
           drawLines(end);
         });
-
+        var popup = new mapboxgl.Popup({ offset: 25 }).setText(
+          'Flight Information Goes Here'
+        );
         new mapboxgl.Marker(ed, { offset: [0, -23] })
           .setLngLat(marker.geometry.coordinates)
+          .setPopup(popup)
           .addTo(map);
       });
     }
