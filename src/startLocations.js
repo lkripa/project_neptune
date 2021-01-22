@@ -1,4 +1,4 @@
-export var points = 
+export var startLocations = 
   { 
     // MADRID
     "type": "FeatureCollection",
