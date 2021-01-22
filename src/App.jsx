@@ -4,22 +4,16 @@ import './App.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { points } from './points.js';
 import { destinations } from './destination.js';
+import { greatCircle, point } from '@turf/turf';
 
 /**
  * This is the map component.
  */
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGtyaXBhIiwiYSI6ImNrazVpZHQ5OTBxa3kyd3FuMnoyYmVlZHAifQ.wxeraMVYC8zmS4rXERn4ng';
-// interface locationProps {
-//   lng: any;
-//   lat: any;
-//   zoom: any;
-// }
-
 
 
 class App extends React.Component {
-  // private myRef: React.RefObject<HTMLInputElement>;
   constructor(props) {
     super(props);
     this.state = {
@@ -47,24 +41,39 @@ class App extends React.Component {
     });
   
     map.on('load', () => {
-      /* Add the data to your map as a layer */
-      // map.addLayer({
-      //   "id": "locations",
-      //   "type": "symbol",
-      //   /* Add a GeoJSON source containing place coordinates and information. */
-      //   "source": {
-      //     "type": "geojson",
-      //     "data": points
-      //   },
-      //   "layout": {
-      //     "icon-image": "restaurant-15" ,
-      //     "icon-allow-overlap": true,
-      //   }
-      // });
+      var start1 = point([-3.7025600, 40.4165000]); // Madrid
+      var start2 = point([8.5500000, 47.3666700]); // Zurich
+      var end = point([9.283447, 40.078072]); // Sardinia
+      var greatCircle1 = greatCircle(start1, end, {'name': 'Zurich to Sardinia'});
+      var greatCircle2 = greatCircle(start2, end, {'name': 'Zurich to Sardinia'});
+
+      map.addSource('flight_lines', {
+        'type': 'geojson',
+        'data': 
+        {
+          'type': 'FeatureCollection',
+          'features': [ greatCircle1, greatCircle2 ]
+        }
+      });
+
+      map.addLayer({
+        'id': 'flight_lines',
+        'type': 'line',
+        'source': 'flight_lines',
+        'paint': {
+          'line-width': 1.5,
+          // Use a get expression (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-get)
+          // to set the line-color to a feature property value.
+          'line-color': '#282c34', //['get', 'color'],
+          'line-dasharray': [1, 1]
+        }
+      });
+
       map.addSource('places', {
         type: 'geojson',
         data: points & destinations
       });
+      
       addMarkers();
     });
 
@@ -88,17 +97,17 @@ class App extends React.Component {
     });
     destinations.features.forEach(function(marker) {
       /* Create a div element for the marker. */
-      var el = document.createElement('div');
+      var ed = document.createElement('div');
       /* Assign a unique `id` to the marker. */
-      el.id = "marker-" + marker.properties.id;
+      ed.id = "marker-" + marker.properties.id;
       /* Assign the `marker` class to each marker for styling. */
-      el.className = 'destination_marker';
+      ed.className = 'destination_marker';
       
       /**
        * Create a marker using the div element
        * defined above and add it to the map.
       **/
-      new mapboxgl.Marker(el, { offset: [0, -23] })
+      new mapboxgl.Marker(ed, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
         .addTo(map);
     });

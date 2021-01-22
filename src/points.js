@@ -13,14 +13,14 @@ export var points =
           ]
         },
         "properties": {
-          "phoneFormatted": "",
-          "phone": "",
-          "address": "",
+          // "phoneFormatted": "",
+          // "phone": "",
+          // "address": "",
           "city": "Madrid",
           "country": "Spain",
-          "crossStreet": "",
-          "postalCode": "",
-          "state": ""
+          // "crossStreet": "",
+          // "postalCode": "",
+          // "state": ""
         }
       },
       { 
@@ -34,14 +34,14 @@ export var points =
           ]
         },
         "properties": {
-          "phoneFormatted": "",
-          "phone": "",
-          "address": "",
+          // "phoneFormatted": "",
+          // "phone": "",
+          // "address": "",
           "city": "Zurich",
           "country": "Switzerland",
-          "crossStreet": "",
-          "postalCode": "",
-          "state": ""
+          // "crossStreet": "",
+          // "postalCode": "",
+          // "state": ""
         }
       }
     ]
