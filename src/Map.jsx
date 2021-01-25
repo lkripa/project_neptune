@@ -1,6 +1,6 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
-import './App.css';
+import './Map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { startLocations } from './startLocations.js';
 import { destinations } from './destination.js';
@@ -13,7 +13,7 @@ import { greatCircle, point } from '@turf/turf';
 mapboxgl.accessToken = 'pk.eyJ1IjoibGtyaXBhIiwiYSI6ImNrazVpZHQ5OTBxa3kyd3FuMnoyYmVlZHAifQ.wxeraMVYC8zmS4rXERn4ng';
 // TODO  set max zoom out
 
-class App extends React.Component {
+class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -136,4 +136,4 @@ class App extends React.Component {
   }
 }
  
-export default App;
+export default Map;

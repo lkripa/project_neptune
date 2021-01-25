@@ -1,9 +1,12 @@
 import React from 'react';
 import logo from './img/globe.png';
 import './Main.css';
-import App from './App';
+import Map from './Map';
+import FormBox from './FormBox';
 
-
+/**
+ * This is the Main component of the App.
+ */
 
 class Main extends React.Component {
   render() {
@@ -22,8 +25,9 @@ class Main extends React.Component {
           >
             Learn More
           </a>
+        <FormBox />
         </div>
-        <App />
+        <Map />
       </div>
     );
   }

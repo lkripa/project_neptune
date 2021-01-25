@@ -4,8 +4,9 @@
   }
   
   .App-logo {
-    height: 40vmin;
+    height: 35vmin;
     pointer-events: none;
+    padding: 1em;
   }
 
   .App-header {    
