@@ -19,7 +19,10 @@ class Map extends React.Component {
     this.state = {
       lng: 5,
       lat: 34,
-      zoom: 1.58
+      zoom: 1.58,
+         // Start Locatiions
+      start1 : point([-3.7025600, 40.4165000]), // Madrid
+      start2 : point([8.5500000, 47.3666700]), // Zurich
     };
     this.myRef = React.createRef();
   }
@@ -31,11 +34,10 @@ class Map extends React.Component {
       center: [this.state.lng, this.state.lat],
       zoom: this.state.zoom
     });
-    // Start Locatiions and Destination Point
-    var start1 = point([-3.7025600, 40.4165000]); // Madrid
-    var start2 = point([8.5500000, 47.3666700]); // Zurich
-    var end = point([9.283447, 40.078072]); // Sardinia
-    
+
+    // Destination Point
+    var end = point([9.283447, 40.078072]) // Sardinia
+
     // Set loading map view
     map.on('move', () => {
       this.setState({
@@ -45,17 +47,10 @@ class Map extends React.Component {
       });
     });
   
-    map.on('load', () => {
-      map.addSource('places', {
-        type: 'geojson',
-        data: startLocations & destinations
-      });
-      addMarkers();
-      drawLines(end);
-    });
-    function drawLines(end){
-      var greatCircle1 = greatCircle(start1, end, {'name': 'Madrid to Sardinia'});
-      var greatCircle2 = greatCircle(start2, end, {'name': 'Zurich to Sardinia'});
+    
+    let drawLines = (end) => {
+      var greatCircle1 = greatCircle(this.state.start1, end, {'name': 'Madrid to Sardinia'});
+      var greatCircle2 = greatCircle(this.state.start2, end, {'name': 'Zurich to Sardinia'});
       map.addSource('flight_lines', {
         'type': 'geojson',
         'data': 
@@ -78,7 +73,7 @@ class Map extends React.Component {
       });
     }
 
-    function addMarkers() {
+    let addMarkers = () => {
       // Start location marker load
       /* For each feature in the GeoJSON object above: */
       startLocations.features.forEach(function(marker) {
@@ -121,7 +116,15 @@ class Map extends React.Component {
           .addTo(map);
       });
     }
-}
+    map.on('load', () => {
+      map.addSource('places', {
+        type: 'geojson',
+        data: startLocations & destinations
+      });
+      addMarkers();
+      drawLines(end);
+    });
+  }
 
   render() {
     return (
