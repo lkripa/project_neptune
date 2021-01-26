@@ -8,7 +8,35 @@ import FormBox from './FormBox';
  * This is the Main component of the App.
  */
 
-class Main extends React.Component {
+interface Locations {
+  points1 : number[];
+  points2: number[];
+}
+
+// class Main extends React.Component{
+class Main extends React.Component <{}, Locations> {
+  constructor(props:Locations) {
+    super(props);
+    this.state = {
+      // Start Locatiions
+      points1 : [0,0],
+      points2 : [0,0],
+    };
+  }
+
+  changeStart = (points: number[], isOne: boolean) => {
+    if (isOne) {
+      this.setState({
+        points1: points,
+      });
+    } else {
+      this.setState({
+        points2: points,
+      });
+    }
+    console.log('isPersonOne:', isOne, points);
+  }
+
   render() {
     return (
       <div className="Main">
@@ -25,9 +53,9 @@ class Main extends React.Component {
           >
             Learn More
           </a>
-        <FormBox />
+        <FormBox changeStart={this.changeStart} />
         </div>
-        <Map />
+        <Map points1={this.state.points1} points2={this.state.points2} />
       </div>
     );
   }

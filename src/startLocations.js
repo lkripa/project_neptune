@@ -13,14 +13,8 @@ export var startLocations =
           ]
         },
         "properties": {
-          // "phoneFormatted": "",
-          // "phone": "",
-          // "address": "",
           "city": "Madrid",
           "country": "Spain",
-          // "crossStreet": "",
-          // "postalCode": "",
-          // "state": ""
         }
       },
       { 
@@ -34,14 +28,8 @@ export var startLocations =
           ]
         },
         "properties": {
-          // "phoneFormatted": "",
-          // "phone": "",
-          // "address": "",
           "city": "Zurich",
           "country": "Switzerland",
-          // "crossStreet": "",
-          // "postalCode": "",
-          // "state": ""
         }
       }
     ]

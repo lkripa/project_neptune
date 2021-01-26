@@ -1,44 +1,43 @@
 import React from 'react';
 import { Form, FormControl, Button, Dropdown, Container, Row, Col } from 'react-bootstrap'; 
 import './FormBox.css';
+import Menu from './DropDownMenu';
 
 /**
  * This is the User Form component.
  */
 
- // TODO when I click on the button, the location on the map will change
- 
-class FormBox extends React.Component {
-  // When the user clicks on the button,
-  // toggle between hiding and showing the dropdown content
-  
+interface FuncProps {
+ changeStart(points: number[], isOne: boolean): any;
+}
+
+class FormBox extends React.Component <FuncProps> {
+
+
   searchFunc() {
-    let search = document.getElementById("myDropdown")
-    if(search) (search as HTMLFormElement).classList.toggle("show"); 
+    let search = document.getElementById("myDropdown");
     console.log(search);
   }
+
+  // Filter letters when user types into form
   filter(myInput:string) {
     var filterLetter: string = "";
     var a: HTMLCollectionOf<HTMLAnchorElement>;
     let input = document.getElementById(myInput);
     if(input) {
-        filterLetter = (input as HTMLFormElement).value.toUpperCase()
-    };
+      filterLetter = (input as HTMLFormElement).value.toUpperCase();
+    }
     console.log(filterLetter);
     let divd = document.getElementById("myDropdown");
-    a = (divd as HTMLFormElement).getElementsByTagName("a")
+    a = (divd as HTMLFormElement).getElementsByTagName("a");
     for (let i:number  = 0; i < a.length; i++) {
-        var txtValue:string = a[i].textContent || a[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filterLetter) > -1) {
+      var txtValue:string = a[i].textContent || a[i].innerText;
+      if (txtValue.toUpperCase().indexOf(filterLetter) > -1) {
         a[i].style.display = "";
-        } else {
+      } else {
         a[i].style.display = "none";
-        }
+      }
     }
-  }
-  changeLocations(): number[] {
-    let startPlace: number[] =[-3.7025600, 40.4165000];
-    return startPlace;
   }
 
   render() {
@@ -48,23 +47,19 @@ class FormBox extends React.Component {
           <Container id="myDropdown">
             <Row>
               <Col>
-            <Dropdown className="padding">
-              <Dropdown.Toggle variant="info" id="dropdown-basic">
-                <FormControl 
-                  type="text" 
-                  placeholder="Your Airport" 
-                  className="padding mr-sm-2" 
-                  onKeyUp={() => this.filter("myInput")} 
-                  id="myInput" 
-                />
-              </Dropdown.Toggle>
-              <Button variant="outline-info" onClick={this.searchFunc}>Choose</Button>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={this.changeLocations}>Zurich</Dropdown.Item>
-                <Dropdown.Item onClick={this.changeLocations}>Madrid</Dropdown.Item>
-                <Dropdown.Item onClick={this.changeLocations}>Los Angeles</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                <Dropdown className="padding">
+                  <Dropdown.Toggle variant="info" id="dropdown-basic">
+                    <FormControl 
+                      type="text" 
+                      placeholder="Your Airport" 
+                      className="padding mr-sm-2" 
+                      onKeyUp={() => this.filter("myInput")} 
+                      id="myInput" 
+                    />
+                  </Dropdown.Toggle>
+                  <Button variant="outline-info" onClick={this.searchFunc}>Choose</Button>
+                  <Menu changeStart={this.props.changeStart} isOne={true} />
+                </Dropdown>
             </Col>
             <Col>
             <Dropdown className="padding">
@@ -78,11 +73,7 @@ class FormBox extends React.Component {
                   />
                 </Dropdown.Toggle>
                 <Button variant="outline-info" onClick={this.searchFunc}>Choose</Button> 
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={this.changeLocations}>Zurich</Dropdown.Item>
-                <Dropdown.Item onClick={this.changeLocations}>Madrid</Dropdown.Item>
-                <Dropdown.Item onClick={this.changeLocations}>Los Angeles</Dropdown.Item>
-              </Dropdown.Menu>
+                <Menu changeStart={this.props.changeStart} isOne ={false} />
             </Dropdown>
             </Col>
             </Row>
@@ -92,4 +83,5 @@ class FormBox extends React.Component {
     );
   }
 }
+
 export default FormBox;
