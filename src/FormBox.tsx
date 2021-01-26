@@ -27,7 +27,6 @@ class FormBox extends React.Component <FuncProps> {
     if(input) {
       filterLetter = (input as HTMLFormElement).value.toUpperCase();
     }
-    console.log(filterLetter);
     let divd = document.getElementById("myDropdown");
     a = (divd as HTMLFormElement).getElementsByTagName("a");
     for (let i:number  = 0; i < a.length; i++) {
