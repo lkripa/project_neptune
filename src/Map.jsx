@@ -2,7 +2,7 @@ import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import './Map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { startLocations } from './startLocations.js';
+// import { startLocations } from './startLocations.js';
 import { destinations } from './destination.js';
 import { greatCircle, point } from '@turf/turf';
 
@@ -23,48 +23,21 @@ class Map extends React.Component {
     };
 
     this.myRef = React.createRef();
-    this.map = null;
     this.end = point([9.283447, 40.078072]); // Sardinia
     this.greatCircle1 = greatCircle(point(this.props.points1), this.end, {'name': 'Madrid to Sardinia'});
     this.greatCircle2 = greatCircle(point(this.props.points2), this.end, {'name': 'Zurich to Sardinia'});
     this.isLines = false;
-    this.start = { 
-      // MADRID
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": this.props.points1
-          },
-          "properties": {
-            "city": "Madrid",
-            "country": "Spain",
-          }
-        },
-        { 
-          // ZURICH
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": this.props.points2
-          },
-          "properties": {
-            "city": "Zurich",
-            "country": "Switzerland",
-          }
-        }
-      ]
-    };
+    this.map = null;
+    this.startMarker = null;
+    this.start = null;
   }
   
-
-  removeStart = () => {
+  //TODO: FIX BUG WITH MARKERS TO APPEAR CORRECTLY ON MAP
+  removeStartLines = () => {
     this.map.removeLayer('flight_lines');
     this.map.removeSource('flight_lines');
-    
-    // this.map.removeSource('startLocations');
+    this.startMarker.remove();
+    this.map.removeSource('startLocations');
   }
 
   drawLines = () => {
@@ -87,50 +60,72 @@ class Map extends React.Component {
       'source': 'flight_lines',
       'paint': {
         'line-width': 1.5,
-        // Use a get expression (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-get)
-        // to set the line-color to a feature property value.
-        'line-color': '#282c34', //['get', 'color'],
+        'line-color': '#282c34',
         'line-dasharray': [1, 1]
       }
     });
   }
 
-  addMarkers = () => {
+  addStartMarkers = () => {
+    this.start = { 
+      // Person 1
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": this.props.points1
+          },
+          "properties": {
+            "city": "",
+            "country": "",
+          }
+        },
+        { 
+          // Person 2
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": this.props.points2
+          },
+          "properties": {
+            "city": "",
+            "country": "",
+          }
+        }
+      ]
+    };
+
     this.map.addSource('startLocations', {
       type: 'geojson',
       data: this.start
-    })
-    // Start location marker load
-    /* For each feature in the GeoJSON object above: */
+    });
+    console.log(this.start);
+
+    /* Start location marker load */
+    /* For each feature in the GeoJSON object: */
     this.start.features.forEach(marker => {
       /* Create a div element for the marker. */
       var el = document.createElement('div');
-      // /* Assign a unique `id` to the marker. */
-      // el.id = "marker-" + marker.properties.id;
-      /* Assign the `marker` class to each marker for styling. */
       el.className = 'marker';
-      el.addEventListener('click', () => { 
-        console.log("Start Location Clicked.");
-      }); 
-
-      
-      new mapboxgl.Marker(el, { offset: [0, -23] })
+ 
+      this.startMarker = new mapboxgl.Marker(el, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
         .addTo(this.map);
     });
+  }
+
+  addDestinationMarkers = () => {
     // Destination marker Load
     destinations.features.forEach(marker => {
-      /* Create a div element for the marker. */
       var ed = document.createElement('div');
-      /* Assign a unique `id` to the marker. */
       ed.id = "marker-" + marker.properties.id;
-      /* Assign the `marker` class to each marker for styling. */
       ed.className = 'destination_marker';
       ed.addEventListener('click', e => 
       { 
         // Reload the newly clicked destination to show flight lines
         this.end = marker.geometry.coordinates;
-        // this.map.removeLayer('flight_lines')
         // this.setPopupmap.removeSource('flight_lines')
         this.removeStart();
         this.drawLines();
@@ -138,7 +133,7 @@ class Map extends React.Component {
       // var popup = new mapboxgl.Popup({ offset: 25 }).setText(
       //   'Flight Information Goes Here'
       // );
-      new mapboxgl.Marker(ed, { offset: [0, -23] })
+       new mapboxgl.Marker(ed, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
         // .setPopup(popup)
         .addTo(this.map);
@@ -177,12 +172,13 @@ class Map extends React.Component {
           (this.props.points2[0] !== 0) && 
           (this.props.points2[1] !== 0)) 
           {
-          console.log("after both start locations: ", this.props.points1, this.props.points2);
+          console.log("Both locations selected: ", this.props.points1, this.props.points2);
           
           if (this.isLines) {
-            this.removeStart();
+            this.removeStartLines();
           }
-          this.addMarkers();
+          this.addStartMarkers();
+          this.addDestinationMarkers();
           this.drawLines();
         }
     }
