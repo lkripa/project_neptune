@@ -7,6 +7,8 @@ import Menu from './DropDownMenu';
  * This is the User Form component.
  */
 
+ // TODO: when city is clicked, the form fills in with the city
+
 interface FuncProps {
  changeStart(points: number[], isOne: boolean): any;
 }
@@ -51,7 +53,7 @@ class FormBox extends React.Component <FuncProps> {
                     <FormControl 
                       type="text" 
                       placeholder="Your Airport" 
-                      className="padding mr-sm-2" 
+                      className="padding mr-sm-2 formColor" 
                       onKeyUp={() => this.filter("myInput")} 
                       id="myInput" 
                     />

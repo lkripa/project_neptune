@@ -2,7 +2,7 @@ import React from 'react';
 import {Dropdown} from 'react-bootstrap';
 
 /**
- * This is the Menu component.
+ * This is the Menu component for the start Locations.
  */
 
 interface FuncProps {

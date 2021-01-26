@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './img/globe.png';
+// import logo from './img/globe.png';
 import './Main.css';
 import Map from './Map';
 import FormBox from './FormBox';
@@ -41,9 +41,11 @@ class Main extends React.Component <{}, Locations> {
     return (
       <div className="Main">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          {/* <img src={logo} className="App-logo" alt="logo" /> */}
+          <h2>Let's fly everywhere!</h2>
+          <p>We'll help you find the cheapest flight for you and your friend to anywhere in the world!</p>
           <p>
-            We're going to fly everywhere!
+            Pick your airport city and your friend's airport city.
           </p>
           <a
             className="App-link"

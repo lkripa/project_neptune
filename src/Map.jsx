@@ -7,11 +7,10 @@ import { destinations } from './destination.js';
 import { greatCircle, point } from '@turf/turf';
 
 /**
- * This is the map component.
+ * This is the Map component.
  */
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGtyaXBhIiwiYSI6ImNrazVpZHQ5OTBxa3kyd3FuMnoyYmVlZHAifQ.wxeraMVYC8zmS4rXERn4ng';
-// TODO: when city is clicked, the form fills in with the city
 
 class Map extends React.Component {
   constructor(props) {
