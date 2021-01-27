@@ -1,6 +1,8 @@
 # Project Neptune
 
 Web App for Post-Covid Times <br />
+Want to meet your friend in another city and are having trouble finding the cheapest flight for both of you? <br />
+Choose an airport city for you and your friend and we'll give you the 3 cheapest options to see each other! <br />
 Visit it on: https://projectneptune-167d5.web.app
 
 ### Installation

@@ -54,7 +54,6 @@ class Map extends React.Component {
   removeStartMarkers = () => {
     this.markerArray.forEach((marker) => {
       marker.remove();
-      console.log("remove ", marker, " here")
     })
     this.map.removeSource('startLocations');
     this.hasMarkers = false;
@@ -129,7 +128,7 @@ class Map extends React.Component {
 
     //Add markers on map and store for deletion
     this.start.features.forEach(marker => {
-      /* Create a div element for the marker. */
+      // Create a div element for the marker.
       var el = document.createElement('div');
       el.className = 'marker';
  
@@ -142,7 +141,7 @@ class Map extends React.Component {
 
   // Adds the markers for destinations
   addDestinationMarkers = () => {
-    // Destination marker Load
+    // Destination marker load
     destinations.features.forEach(marker => {
       var ed = document.createElement('div');
       ed.id = "marker-" + marker.properties.id;

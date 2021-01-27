@@ -3,19 +3,19 @@ export var destinations =
     "type": "FeatureCollection",
     "features": [
       {
-       //    CALIFORNIA
+       //    New York
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-             -118.243683,34.052235
+             -73.935242, 40.730610,
           ]
         },
         "properties": {
         //   "phoneFormatted": "",
         //   "phone": "",
         //   "address": "",
-          "city": "Los Angeles",
+          "city": "New York City",
           "country": "USA",
         //   "crossStreet": "",
         //   "postalCode": "",
