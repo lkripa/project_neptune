@@ -21,6 +21,8 @@ class Map extends React.Component {
       lng: 5,
       lat: 34,
       zoom: 1.58,
+      points1: [0,0],
+      points2: [0,0]
     };
 
     this.myRef = React.createRef();
@@ -31,8 +33,8 @@ class Map extends React.Component {
     this.demoCityList = [];
    
     // Initial positions for drawing line
-    this.greatCircle1 = greatCircle(point(this.props.points1), this.end, {'name': 'Person1 Line'});
-    this.greatCircle2 = greatCircle(point(this.props.points2), this.end, {'name': 'Person2 Line'});
+    this.greatCircle1 = greatCircle(point(this.state.points1), this.end, {'name': 'Person1 Line'});
+    this.greatCircle2 = greatCircle(point(this.state.points2), this.end, {'name': 'Person2 Line'});
     
     // Checks for lines and markers on the map
     this.hasLines = false;
@@ -45,6 +47,8 @@ class Map extends React.Component {
     this.map = null;
     this.startMarker = null;
     this.start = null;
+
+    this.cityCoordinates = null;
   }
   
   // Removes the layers and source coordinates for lines
@@ -67,8 +71,8 @@ class Map extends React.Component {
   drawLines = () => {
     this.hasLines = true;
     // Point coordinates from FormBox
-    this.greatCircle1 = greatCircle(point(this.props.points1), this.end, {'name': 'Person1 Line'});
-    this.greatCircle2 = greatCircle(point(this.props.points2), this.end, {'name': 'Person2 Line'});
+    this.greatCircle1 = greatCircle(point(this.state.points1), this.end, {'name': 'Person1 Line'});
+    this.greatCircle2 = greatCircle(point(this.state.points2), this.end, {'name': 'Person2 Line'});
     // Add coordinates to map
     this.map.addSource('flight_lines', {
       'type': 'geojson',
@@ -103,7 +107,7 @@ class Map extends React.Component {
           "type": "Feature",
           "geometry": {
             "type": "Point",
-            "coordinates": this.props.points1
+            "coordinates": this.state.points1
           },
           "properties": {
             "city": "",
@@ -115,7 +119,7 @@ class Map extends React.Component {
           "type": "Feature",
           "geometry": {
             "type": "Point",
-            "coordinates": this.props.points2
+            "coordinates": this.state.points2
           },
           "properties": {
             "city": "",
@@ -170,6 +174,7 @@ class Map extends React.Component {
 
   // Mounting map 
   componentDidMount() {
+    // create list of city names
     this.getCityNames();
     this.map = new mapboxgl.Map({
       container: this.myRef.current,
@@ -196,16 +201,65 @@ class Map extends React.Component {
     })
   }
 
+  // Get city coodinates from geojson file
+  getCityCoordinates = (cityName) => {
+    cityCodes.getFeaturesByProperty = function(key, value) {
+      return this.features.filter(function(feature){
+        if (feature.properties[key] === value) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    };
+    
+    try {
+      var feats = cityCodes.getFeaturesByProperty('city_user', cityName);
+      var coords = feats[0].geometry.coordinates;
+      // this.props.updateCityCoords(coords);
+      // this.cityCoordinates = coords;
+      console.log("cityCoords", cityName, coords);
+    } catch (error) {
+      console.log("cityCoods: does not exist")
+    }
+    return coords
+  }
+
+  getCityNames = () => {
+    var numberCities = cityCodes.features.length;
+    for (var i = 0; i < numberCities; i++) {
+      var newCity = cityCodes.features[i].properties['city_user'];
+      if (!this.demoCityList.includes(newCity)) {
+        this.demoCityList.push(newCity);
+      }
+    }
+    this.props.updateCityList(this.demoCityList);
+  };
+
   // Update Coordinates from FormBox
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    // let didChange = false;
+    // Check to see if there was an update for the city name to get coordinates
+    if (this.props.inputValue1 !== prevProps.inputValue1){
+      // didChange = true;
+      let coords = this.getCityCoordinates(this.props.inputValue1);
+      coords != null && this.setState({points1: coords}, () => 
+        console.log("points1", coords));
+    }
+    if (this.props.inputValue2 !== prevProps.inputValue2){
+      // didChange = true;
+      let coords = this.getCityCoordinates(this.props.inputValue2);
+      coords != null && this.setState({points2: coords}, () => 
+        console.log("points2", coords));
+    }
     // Check to see if there was an update and that both start locations have been selected
-    if (((prevProps.points1 !== this.props.points1) || (prevProps.points2 !== this.props.points2)) && (
-      (this.props.points1[0] !== 0) && 
-      (this.props.points1[1] !== 0) && 
-      (this.props.points2[0] !== 0) && 
-      (this.props.points2[1] !== 0))) {
-        console.log("Both locations selected: ", this.props.points1, this.props.points2);
-        
+    if (((prevState.points1 !== this.state.points1) || (prevState.points2 !== this.state.points2)) && (
+      (this.state.points1[0] !== 0) && 
+      (this.state.points1[1] !== 0) && 
+      (this.state.points2[0] !== 0) && 
+      (this.state.points2[1] !== 0))) {
+        console.log("Both locations selected: ", this.state.points1, this.state.points2);
+  
         // Checks if map has lines 
         if (this.hasLines) {
           this.removeStartLines();
@@ -220,34 +274,6 @@ class Map extends React.Component {
         this.drawLines();
         }
   }
-
-  // Get city coodinates from geojson file
-  getCityCoordinates = (cityName) => {
-    cityCodes.getFeaturesByProperty = function(key, value) {
-      return this.features.filter(function(feature){
-        if (feature.properties[key] === value) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    };
-      
-    var feats = cityCodes.getFeaturesByProperty('city_user', cityName);
-    console.log(feats[0].geometry.coordinates);
-
-  }
-
-  getCityNames = () => {
-    var numberCities = cityCodes.features.length;
-    for (var i = 0; i < numberCities; i++) {
-      var newCity = cityCodes.features[i].properties['city_user'];
-      if (!this.demoCityList.includes(newCity)) {
-        this.demoCityList.push(newCity);
-      }
-    }
-    this.props.updateCityList(this.demoCityList);
-  };
 
   render() {
     return (

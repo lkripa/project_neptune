@@ -10,11 +10,14 @@ import Menu from './DropDownMenu';
  // TODO: add Enter key to also act as "select" button
 
 interface FuncProps {
- changeStart(points: number[], isOne: boolean , startCity: string): any;
+ changeStart(isOne: boolean , city: string): any;
  changeLetter(letter: string, person: string): any;
+//  updateStartCity(startCity: string): any;
  startCityList: string[];
  inputValue1: string;
  inputValue2: string;
+//  cityCoords: number[];
+//  startCity: string;
 }
 
 class FormBox extends React.Component <FuncProps> {
@@ -67,6 +70,9 @@ class FormBox extends React.Component <FuncProps> {
                       isOne={true} 
                       startCityList={this.props.startCityList}
                       inputValue={this.props.inputValue1}
+                      // cityCoords={this.props.cityCoords}
+                      // updateStartCity={this.props.updateStartCity}
+                      //startCity={this.props.startCity}
                     />
                   }
                 </Dropdown>
@@ -89,6 +95,9 @@ class FormBox extends React.Component <FuncProps> {
                     isOne={false} 
                     startCityList={this.props.startCityList}
                     inputValue={this.props.inputValue2}
+                    // cityCoords={this.props.cityCoords}
+                    // updateStartCity={this.props.updateStartCity}
+                    //startCity={this.props.startCity}
                   />
                 }
             </Dropdown>

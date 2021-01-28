@@ -10,12 +10,13 @@ import FormBox from './FormBox';
  */
 
 interface LocationsProps {
-  points1 : number[];
-  points2: number[];
+  // points1 : number[];
+  // points2: number[];
   startCityList: string[];
   startCityName: string;
   inputValue1: string;
   inputValue2: string;
+  // cityCoords: number[];
 }
 
 // class Main extends React.Component{
@@ -24,34 +25,36 @@ class Main extends React.Component <{}, LocationsProps> {
     super(props);
     this.state = {
       // Start Locatiions
-      points1 : [0,0],
-      points2 : [0,0],
+      // points1 : [0,0],
+      // points2 : [0,0],
       startCityList: [],
       startCityName: "",
       inputValue1: "",
-      inputValue2: ""
+      inputValue2: "",
+      // cityCoords: [0,0]
     };
   }
 
   // change city string on text field form
-  changeStart = (points: number[], isOne: boolean, startCity: string) => {
+  // updateStartCity = (startCity: string) => {
+  //   this.setState({startCityName: startCity})
+  // }
+
+  changeStart = (isOne: boolean, city: string) => {
+    this.setState({startCityName: city})
     if (isOne) {
       this.setState({
-        points1: points,
-      });
-      this.setState({inputValue1: startCity}, () => 
-      console.log("city:", this.state.inputValue1
-    ));
+        // points1: points,
+        inputValue1: city}, () => 
+      console.log("cityValue:", this.state.inputValue1, isOne)
+      );
     } else {
       this.setState({
-        points2: points,
-      });
-      this.setState({inputValue2: startCity}, () => 
-      console.log("city:", this.state.inputValue2
-    ));
+        // points2: points,
+        inputValue2: city}, () => 
+      console.log("cityValue:", this.state.inputValue2)
+      );
     }
-    this.setState({startCityName: startCity})
-    console.log('isPersonOne:', isOne, points);
   }
 
   updateCityList = (onlyCityList: string[]) => {
@@ -71,6 +74,10 @@ class Main extends React.Component <{}, LocationsProps> {
       console.log(this.state.inputValue2);
     }
   }
+
+  // updateCityCoords = (coordinates: number[]) => {
+  //   this.setState({cityCoords: coordinates})
+  // }
   
   render() {
     return (
@@ -96,12 +103,19 @@ class Main extends React.Component <{}, LocationsProps> {
           inputValue1={this.state.inputValue1}
           inputValue2={this.state.inputValue2}
           changeLetter={this.changeLetter}
+          // cityCoords={this.state.cityCoords}
+          // updateStartCity={this.updateStartCity}
+          // startCity={this.state.startCityName}
         />
         </div>
         <Map 
-          points1={this.state.points1} 
-          points2={this.state.points2} 
-          updateCityList={this.updateCityList} 
+          // points1={this.state.points1} 
+          // points2={this.state.points2} 
+          updateCityList={this.updateCityList}
+          // startCityName={this.state.startCityName}
+          // updateCityCoords={this.updateCityCoords}
+          inputValue1={this.state.inputValue1}
+          inputValue2={this.state.inputValue2}
         />
       </div>
     );
