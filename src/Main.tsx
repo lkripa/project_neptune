@@ -4,6 +4,7 @@ import './Main.css';
 import Map from './Map';
 import FormBox from './FormBox';
 
+
 /**
  * This is the Main component of the App.
  */
@@ -11,6 +12,7 @@ import FormBox from './FormBox';
 interface Locations {
   points1 : number[];
   points2: number[];
+  startCityList: string[];
 }
 
 // class Main extends React.Component{
@@ -21,9 +23,11 @@ class Main extends React.Component <{}, Locations> {
       // Start Locatiions
       points1 : [0,0],
       points2 : [0,0],
+      startCityList: []
     };
   }
 
+  // change city string on text field form
   changeStart = (points: number[], isOne: boolean) => {
     if (isOne) {
       this.setState({
@@ -36,6 +40,11 @@ class Main extends React.Component <{}, Locations> {
     }
     console.log('isPersonOne:', isOne, points);
   }
+
+  updateCityList = (onlyCityList: string[]) => {
+    this.setState({startCityList: onlyCityList})
+  };
+  
 
   render() {
     return (
@@ -55,9 +64,9 @@ class Main extends React.Component <{}, Locations> {
           >
             Learn More
           </a>
-        <FormBox changeStart={this.changeStart} />
+        <FormBox changeStart={this.changeStart} startCityList={this.state.startCityList}/>
         </div>
-        <Map points1={this.state.points1} points2={this.state.points2} />
+        <Map points1={this.state.points1} points2={this.state.points2} updateCityList={this.updateCityList} />
       </div>
     );
   }

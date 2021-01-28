@@ -11,12 +11,14 @@ import Menu from './DropDownMenu';
 
 interface FuncProps {
  changeStart(points: number[], isOne: boolean): any;
+ startCityList: string[];
 }
 
 interface FormState {
   inputValue1: string;
   inputValue2: string;
 }
+
 class FormBox extends React.Component <FuncProps, FormState> {
   constructor(props: FuncProps) {
     super(props);
@@ -25,7 +27,7 @@ class FormBox extends React.Component <FuncProps, FormState> {
       inputValue2: ""
     }
   }
-  // change city on text field form
+  // change city string on text field form
   changeCity = (city: string, isOne: boolean) => {
     if (isOne) {
       this.setState({inputValue1: city}, () => 
@@ -84,13 +86,18 @@ class FormBox extends React.Component <FuncProps, FormState> {
                     <FormControl 
                       type="text" 
                       placeholder="Your Airport"
-                      className="padding mr-sm-2 formColor" 
+                      className="padding mr-sm-2" 
                       id="myInput"
                       value={this.state.inputValue1}
                       onChange={() => this.filter("myInput")}
                     />
                   </Dropdown.Toggle>
-                  <Menu changeStart={this.props.changeStart} isOne={true} changeCity={this.changeCity}/>
+                  <Menu 
+                    changeStart={this.props.changeStart} 
+                    isOne={true} 
+                    changeCity={this.changeCity} 
+                    startCityList={this.props.startCityList} 
+                  />
                 </Dropdown>
             </Col>
             <Col>
@@ -103,9 +110,14 @@ class FormBox extends React.Component <FuncProps, FormState> {
                   id="myInput2"
                   value={this.state.inputValue2}
                   onChange={() => this.filter("myInput2")}
-                  />
+                />
                 </Dropdown.Toggle>
-                <Menu changeStart={this.props.changeStart} isOne={false} changeCity={this.changeCity}/>
+                <Menu 
+                  changeStart={this.props.changeStart} 
+                  isOne={false} 
+                  changeCity={this.changeCity}
+                  startCityList={this.props.startCityList}
+                />
             </Dropdown>
             </Col>
             </Row>

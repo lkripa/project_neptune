@@ -5,6 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 // import { startLocations } from './startLocations.js';
 import { destinations } from './destination.js';
 import { greatCircle, point } from '@turf/turf';
+import { cityCodes } from './cityCodes.js';
 
 /**
  * This is the Map component.
@@ -25,6 +26,9 @@ class Map extends React.Component {
     this.myRef = React.createRef();
     // Initial end point and will rotate through other destination points when clicked
     this.end = point([9.283447, 40.078072]); // Sardinia
+
+    // Start City List for FormBox Menu
+    this.demoCityList = [];
    
     // Initial positions for drawing line
     this.greatCircle1 = greatCircle(point(this.props.points1), this.end, {'name': 'Person1 Line'});
@@ -166,6 +170,7 @@ class Map extends React.Component {
 
   // Mounting map 
   componentDidMount() {
+    this.getCityNames();
     this.map = new mapboxgl.Map({
       container: this.myRef.current,
       style: 'mapbox://styles/mapbox/streets-v11',
@@ -214,7 +219,35 @@ class Map extends React.Component {
         this.addDestinationMarkers();
         this.drawLines();
         }
+  }
+
+  // Get city coodinates from geojson file
+  getCityCoordinates = (cityName) => {
+    cityCodes.getFeaturesByProperty = function(key, value) {
+      return this.features.filter(function(feature){
+        if (feature.properties[key] === value) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    };
+      
+    var feats = cityCodes.getFeaturesByProperty('city_user', cityName);
+    console.log(feats[0].geometry.coordinates);
+
+  }
+
+  getCityNames = () => {
+    var numberCities = cityCodes.features.length;
+    for (var i = 0; i < numberCities; i++) {
+      var newCity = cityCodes.features[i].properties['city_user'];
+      if (!this.demoCityList.includes(newCity)) {
+        this.demoCityList.push(newCity);
+      }
     }
+    this.props.updateCityList(this.demoCityList);
+  };
 
   render() {
     return (

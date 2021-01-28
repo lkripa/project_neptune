@@ -9,6 +9,7 @@ interface FuncProps {
   changeStart(points: number[], isOne: boolean): any;
   changeCity(city: string, isOne: boolean): any;
   isOne: boolean;
+  startCityList: string[];
 }
 
 class Menu extends React.Component <FuncProps> {	
@@ -16,7 +17,15 @@ class Menu extends React.Component <FuncProps> {
   render() {
     return (
       <Dropdown.Menu>
-        <Dropdown.Item
+        {this.props.startCityList.map((city, index) => (
+        <Dropdown.Item key={index} onClick={() => {
+          this.props.changeStart([8.5500000, 47.3666700], this.props.isOne);  
+          this.props.changeCity(city, this.props.isOne);
+        }}>
+          {city}
+        </Dropdown.Item>
+      ))}
+        {/* <Dropdown.Item
           onClick={() => {
             this.props.changeStart([8.5500000, 47.3666700], this.props.isOne);  
             this.props.changeCity("Zurich", this.props.isOne);
@@ -36,7 +45,7 @@ class Menu extends React.Component <FuncProps> {
             this.props.changeCity("Los Angeles", this.props.isOne);
           }}>
           Los Angeles
-        </Dropdown.Item>
+        </Dropdown.Item> */}
       </Dropdown.Menu>
     );
   }
