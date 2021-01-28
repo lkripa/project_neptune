@@ -10,35 +10,14 @@ import Menu from './DropDownMenu';
  // TODO: add Enter key to also act as "select" button
 
 interface FuncProps {
- changeStart(points: number[], isOne: boolean): any;
+ changeStart(points: number[], isOne: boolean , startCity: string): any;
+ changeLetter(letter: string, person: string): any;
  startCityList: string[];
+ inputValue1: string;
+ inputValue2: string;
 }
 
-interface FormState {
-  inputValue1: string;
-  inputValue2: string;
-}
-
-class FormBox extends React.Component <FuncProps, FormState> {
-  constructor(props: FuncProps) {
-    super(props);
-    this.state = {
-      inputValue1: "",
-      inputValue2: ""
-    }
-  }
-  // change city string on text field form
-  changeCity = (city: string, isOne: boolean) => {
-    if (isOne) {
-      this.setState({inputValue1: city}, () => 
-      console.log("city:", this.state.inputValue1
-    ));
-    } else {
-      this.setState({inputValue2: city}, () => 
-      console.log("city:", this.state.inputValue2
-    ));
-    }
-  }
+class FormBox extends React.Component <FuncProps> {
 
   // Filter letters when user types into form
   filter = (myInput:string) => {
@@ -50,23 +29,13 @@ class FormBox extends React.Component <FuncProps, FormState> {
       letter = (input as HTMLFormElement).value;
       filterLetter = (input as HTMLFormElement).value.toUpperCase();
     }
-    if (myInput === "myInput") {
-      this.setState({
-        inputValue1: letter
-      })
-      console.log(this.state.inputValue1);
-    } else {
-      this.setState({
-        inputValue2: letter
-      })
-      console.log(this.state.inputValue2);
-    }
+    this.props.changeLetter(letter, myInput);
     
     let divd = document.getElementById("myDropdown");
     a = (divd as HTMLFormElement).getElementsByTagName("a");
     for (let i:number  = 0; i < a.length; i++) {
       var txtValue:string = a[i].textContent || a[i].innerText;
-      if (txtValue.toUpperCase().indexOf(filterLetter) > -1) {
+      if ((txtValue.toUpperCase().indexOf(filterLetter) > -1) && (filterLetter.length >= 3) ){
         a[i].style.display = "";
       } else {
         a[i].style.display = "none";
@@ -88,16 +57,18 @@ class FormBox extends React.Component <FuncProps, FormState> {
                       placeholder="Your Airport"
                       className="padding mr-sm-2" 
                       id="myInput"
-                      value={this.state.inputValue1}
+                      value={this.props.inputValue1}
                       onChange={() => this.filter("myInput")}
                     />
                   </Dropdown.Toggle>
-                  <Menu 
-                    changeStart={this.props.changeStart} 
-                    isOne={true} 
-                    changeCity={this.changeCity} 
-                    startCityList={this.props.startCityList} 
-                  />
+                  {(this.props.inputValue1.length >= 3 ) &&
+                    <Menu 
+                      changeStart={this.props.changeStart} 
+                      isOne={true} 
+                      startCityList={this.props.startCityList}
+                      inputValue={this.props.inputValue1}
+                    />
+                  }
                 </Dropdown>
             </Col>
             <Col>
@@ -108,16 +79,18 @@ class FormBox extends React.Component <FuncProps, FormState> {
                   placeholder="Friend's Airport" 
                   className="padding mr-sm-2" 
                   id="myInput2"
-                  value={this.state.inputValue2}
+                  value={this.props.inputValue2}
                   onChange={() => this.filter("myInput2")}
                 />
                 </Dropdown.Toggle>
-                <Menu 
-                  changeStart={this.props.changeStart} 
-                  isOne={false} 
-                  changeCity={this.changeCity}
-                  startCityList={this.props.startCityList}
-                />
+                {(this.props.inputValue2.length >=3 ) &&
+                  <Menu 
+                    changeStart={this.props.changeStart} 
+                    isOne={false} 
+                    startCityList={this.props.startCityList}
+                    inputValue={this.props.inputValue2}
+                  />
+                }
             </Dropdown>
             </Col>
             </Row>

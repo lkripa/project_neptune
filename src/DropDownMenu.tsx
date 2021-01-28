@@ -6,10 +6,10 @@ import {Dropdown} from 'react-bootstrap';
  */
 
 interface FuncProps {
-  changeStart(points: number[], isOne: boolean): any;
-  changeCity(city: string, isOne: boolean): any;
+  changeStart(points: number[], isOne: boolean, startCity: string): any;
   isOne: boolean;
   startCityList: string[];
+  inputValue: string;
 }
 
 class Menu extends React.Component <FuncProps> {	
@@ -17,13 +17,16 @@ class Menu extends React.Component <FuncProps> {
   render() {
     return (
       <Dropdown.Menu>
-        {this.props.startCityList.map((city, index) => (
-        <Dropdown.Item key={index} onClick={() => {
-          this.props.changeStart([8.5500000, 47.3666700], this.props.isOne);  
-          this.props.changeCity(city, this.props.isOne);
-        }}>
-          {city}
-        </Dropdown.Item>
+        {this.props.startCityList.map((city,index) => (
+          (city.toUpperCase().includes(this.props.inputValue.toUpperCase()) && this.props.inputValue.length >= 3)
+            ? <Dropdown.Item 
+                key={city+index} 
+                onClick={() => {
+                  this.props.changeStart([8.5500000, 47.3666700], this.props.isOne, city);  
+              }}>
+                {city}
+              </Dropdown.Item>
+            : <></> // TODO fix error here with children need "key"
       ))}
         {/* <Dropdown.Item
           onClick={() => {
