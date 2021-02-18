@@ -1,8 +1,7 @@
 import React from 'react';
-import './NavBar.css';
+import './../style/NavBar.css';
 import { Navbar, Nav } from 'react-bootstrap';
 import { FaTh } from 'react-icons/fa';
-// import { FaUser } from 'react-icons/fa';
 import { FaEnvelope } from 'react-icons/fa';
 
 /**

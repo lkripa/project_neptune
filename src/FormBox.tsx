@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, FormControl, Dropdown, Container, Row, Col } from 'react-bootstrap'; 
-import './FormBox.css';
+import './style/FormBox.css';
 import Menu from './DropDownMenu';
 
 /**

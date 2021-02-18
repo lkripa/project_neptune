@@ -1,11 +1,11 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
-import './Map.css';
+import './style/Map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 // import { startLocations } from './startLocations.js';
-import { destinations } from './destination.js';
+import { destinations } from './data/destination.js';
 import { greatCircle, point } from '@turf/turf';
-import { cityCodes } from './cityCodes.js';
+import { cityCodes } from './data/cityCodes.js';
 
 /**
  * This is the Map component.

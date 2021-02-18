@@ -1,5 +1,5 @@
 import React from 'react';
-import './Main.css';
+import './style/Main.css';
 import Map from './Map';
 import FormBox from './FormBox';
 import Info from './Info';
@@ -9,10 +9,12 @@ import axios from 'axios';
 /**
  * This is the Main component of the App.
  */
-// ! Create Processing Symbol for waiting time
+
+// * Create Processing Symbol for waiting time
 // ? Check for this error : Proxy error: Could not proxy request /cityPost from localhost:3000 to http://127.0.0.1:5000/.
 // ? See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNRESET).
 // * Change so that <Info /> pops up after request call
+// ! Fix after change of city to call API
 
 interface LocationsProps {
   startCityList: string[];
@@ -111,6 +113,13 @@ class Main extends React.Component < {}, LocationsProps> {
         this.postAPI()
         this.isFirst = false;
     }
+    // ! Add update the city and run API again here
+    // if (!(this.isFirst) && (
+    //   (prevState.inputValueArray[0] !== "") && (prevState.inputValueArray[1] !== "")
+    //   )) {
+    //   this.postAPI()
+    //   this.isFirst = false;
+    // }
   }
 
   render() {

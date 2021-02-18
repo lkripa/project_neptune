@@ -12,7 +12,7 @@ Visit it on: https://projectneptune-167d5.web.app
  - Download this repo with `git clone https://github.com/lkripa/projectNeptune.git`
  - Run `npm install` within the main folder 
 
-### Start Flask Server
+### Start Local Flask Server
 1. Clone [the flight_finder repo](https://github.com/alexgastone/flight_finder)
 2. Set up  Environment 
 - `python3 -m venv venv`

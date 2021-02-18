@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './index.css';
-// import App from './App.jsx';
-import Footer from './Footer';
-import NavBar from './NavBar';
+import './style/index.css';
+import Footer from './components/Footer';
+import NavBar from './components/NavBar';
 import Main from './Main';
 import About from './About';
 
