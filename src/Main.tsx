@@ -10,6 +10,9 @@ import axios from 'axios';
  * This is the Main component of the App.
  */
 // ! Create Processing Symbol for waiting time
+// ? Check for this error : Proxy error: Could not proxy request /cityPost from localhost:3000 to http://127.0.0.1:5000/.
+// ? See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNRESET).
+// * Change so that <Info /> pops up after request call
 
 interface LocationsProps {
   startCityList: string[];
