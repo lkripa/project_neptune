@@ -9,6 +9,11 @@
     padding: 1em;
   }
 
+  .small p {
+    font-size: 1em;
+    padding: 1vh;
+  }
+
   .App-header {   
     padding: 1em; 
     background-color: #00303f;
@@ -18,7 +23,7 @@
     align-items: center;
     justify-content: center;
     /* font-size: calc(10px + 2vmin); */
-    font-size: 1.5em;
+    font-size: 1em;
     color: #f5f4f4}
   
   @media (prefers-reduced-motion: no-preference) {

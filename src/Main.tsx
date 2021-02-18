@@ -3,6 +3,7 @@ import React from 'react';
 import './Main.css';
 import Map from './Map';
 import FormBox from './FormBox';
+import Info from './Info';
 
 
 /**
@@ -20,7 +21,7 @@ interface LocationsProps {
 }
 
 // class Main extends React.Component{
-class Main extends React.Component <{}, LocationsProps> {
+class Main extends React.Component < {}, LocationsProps> {
   constructor(props:LocationsProps) {
     super(props);
     this.state = {
@@ -52,7 +53,7 @@ class Main extends React.Component <{}, LocationsProps> {
       this.setState({
         // points2: points,
         inputValue2: city}, () => 
-      console.log("cityValue:", this.state.inputValue2)
+      console.log("cityValue:", this.state.inputValue2, isOne)
       );
     }
   }
@@ -83,11 +84,12 @@ class Main extends React.Component <{}, LocationsProps> {
     return (
       <div className="Main">
         <div className="App-header">
+          
           {/* <img src={logo} className="App-logo" alt="logo" /> */}
           <h2>Let's fly everywhere!</h2>
-          <p>We'll help you find the cheapest flight for you and your friend to anywhere in the world!</p>
+          <p>We'll help you find the cheapest flight anywhere in the world!</p>
           <p>
-            Pick your airport city and your friend's airport city.
+            Pick two airport cities and where ever you want to go!
           </p>
           <a
             className="App-link"
@@ -95,8 +97,10 @@ class Main extends React.Component <{}, LocationsProps> {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn More
+            Learn how to code works
           </a>
+          
+          <Info />
         <FormBox 
           changeStart={this.changeStart} 
           startCityList={this.state.startCityList}

@@ -33,27 +33,6 @@ class Menu extends React.Component <FuncProps> {
               </Dropdown.Item>
             : <></> // TODO fix error here with children need "key"
       ))}
-        {/* <Dropdown.Item
-          onClick={() => {
-            this.props.changeStart([8.5500000, 47.3666700], this.props.isOne);  
-            this.props.changeCity("Zurich", this.props.isOne);
-          }}>
-          Zurich
-        </Dropdown.Item>
-        <Dropdown.Item
-          onClick={() => {
-            this.props.changeStart([-3.7025600, 40.4165000], this.props.isOne);
-            this.props.changeCity("Madrid", this.props.isOne);
-          }}>
-          Madrid
-        </Dropdown.Item>
-        <Dropdown.Item
-          onClick={() => {
-            this.props.changeStart([-118.243683,34.052235], this.props.isOne);
-            this.props.changeCity("Los Angeles", this.props.isOne);
-          }}>
-          Los Angeles
-        </Dropdown.Item> */}
       </Dropdown.Menu>
     );
   }
