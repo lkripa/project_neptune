@@ -259,7 +259,7 @@ class Map extends React.Component {
       (this.state.points2[0] !== 0) && 
       (this.state.points2[1] !== 0))) {
         console.log("Both locations selected: ", this.state.points1, this.state.points2);
-  
+        
         // Checks if map has lines 
         if (this.hasLines) {
           this.removeStartLines();
