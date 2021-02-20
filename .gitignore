@@ -28,3 +28,6 @@ yarn-error.log*
 .firebaserc
 .firebase
 firebase.json
+
+#accessToken
+config.js

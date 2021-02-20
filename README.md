@@ -22,6 +22,11 @@ Visit it on: https://projectneptune-167d5.web.app
 4. Run `$python calculate_cheapest.py`. You will be prompted to provide two user cities, possible destination cities that you wish to consider, outbound and inbound flight dates, and number of flights (ranked in order of total price) to display
   * Note: You'll have to provide your personal [RapidAPI key](https://rapidapi.com/skyscanner/api/skyscanner-flight-search) (free!). Once you have one, assign `api_key` in a new `config.py` file. 
 
+### Obtain MapBox accessToken
+1. Sign up for a MapBox Account [here](https://account.mapbox.com/auth/signup/)
+2. Create a config.js file in ./data and add token
+` export var accessToken = 'access token string here';`
+
 ### Run this code locally
 Simply run: `npm start` <br />
 Then checkout the website on `localhost:3000`

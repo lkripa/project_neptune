@@ -6,12 +6,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { destinations } from './data/destination.js';
 import { greatCircle, point } from '@turf/turf';
 import { cityCodes } from './data/cityCodes.js';
+import { accessToken } from './data/config.js';
 
 /**
  * This is the Map component.
  */
 
-mapboxgl.accessToken = 'pk.eyJ1IjoibGtyaXBhIiwiYSI6ImNrazVpZHQ5OTBxa3kyd3FuMnoyYmVlZHAifQ.wxeraMVYC8zmS4rXERn4ng';
+mapboxgl.accessToken = accessToken
 
 class Map extends React.Component {
   constructor(props) {
