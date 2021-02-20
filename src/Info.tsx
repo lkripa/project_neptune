@@ -12,27 +12,7 @@ interface LocationsProps {
 }
 
 class Info extends React.Component <LocationsProps> {
-  // const [placeholderTotalPrice, setPlaceholderTotalPrice] = useState('TBD');
-  // const [placeholderPrice1, setPlaceholderPrice1] = useState('TBD');
-  // const [placeholderPrice2, setPlaceholderPrice2] = useState('TBD');
-  // const [placeholderDate, setPlaceholderDate] = useState('TBD');
-  // const [placeholderOriginCity1, setPlaceholderOriginCity1] = useState('TBD');
-  // const [placeholderOriginCity2, setPlaceholderOriginCity2] = useState('TBD');
-  // const [placeholderDestination, setPlaceholderDestination] = useState('TBD');
 
-  // //! Write the send to server somewhere in Main and write in Python too to receive
-  // useEffect(() => {
-  //   fetch('/cityPost').then(res => res.json()).then(data => {
-  //     setPlaceholderTotalPrice(data.data[0].total_price);
-  //     setPlaceholderPrice1(d
-  // ata.data[0].price_1);
-  //     setPlaceholderPrice2(data.data[0].price_2);
-  //     setPlaceholderDate(data.data[0].date_1);
-  //     setPlaceholderOriginCity1(data.data[0].origin_city_name_1);
-  //     setPlaceholderOriginCity2(data.data[0].origin_city_name_2);
-  //     setPlaceholderDestination(data.data[0].dest_city_name_1);
-  //   });
-  // }, []);
   render() {
     return (
       <div className="small">
