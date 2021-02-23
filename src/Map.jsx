@@ -11,6 +11,7 @@ import { accessToken } from './data/config.js';
 /**
  * This is the Map component.
  */
+// ! Connect Destination changes to screen
 
 mapboxgl.accessToken = accessToken
 
@@ -23,7 +24,8 @@ class Map extends React.Component {
       lat: 34,
       zoom: 1.58,
       points1: [0,0],
-      points2: [0,0]
+      points2: [0,0],
+      pointDestination: [0,0],
     };
 
     this.myRef = React.createRef();
@@ -252,6 +254,12 @@ class Map extends React.Component {
       let coords = this.getCityCoordinates(this.props.inputValue2);
       coords != null && this.setState({points2: coords}, () => 
         console.log("points2", coords));
+    }
+    if (this.props.destinationCity !== prevProps.destinationCity){
+      // didChange = true;
+      let coords = this.getCityCoordinates(this.props.destinationCity);
+      coords != null && this.setState({pointDestination: coords}, () => 
+        console.log("pointDestination", coords));
     }
     // Check to see if there was an update and that both start locations have been selected
     if (((prevState.points1 !== this.state.points1) || (prevState.points2 !== this.state.points2)) && (

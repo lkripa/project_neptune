@@ -1,0 +1,15 @@
+{
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace",
+  },
+  "javascript.autoClosingTags": false,
+  "typescript.autoClosingTags": false,
+  "html.autoClosingTags": false,
+  "[html]": {
+
+    "editor.suggest.insertMode": "replace"
+  }
+}

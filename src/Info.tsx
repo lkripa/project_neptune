@@ -2,6 +2,7 @@ import React from 'react';
 import './style/Main.css';
 
 interface LocationsProps {
+  info: string;
   placeholderTotalPrice: string;
   placeholderPrice1: string;
   placeholderPrice2: string;
@@ -15,9 +16,9 @@ class Info extends React.Component <LocationsProps> {
 
   render() {
     return (
-      <div className="small">
+      <div className={this.props.info}>
           <p>
-            Cheapest Total Price is {this.props.placeholderTotalPrice} EUR
+            <b><u>Cheapest Total Price is {this.props.placeholderTotalPrice} EUR</u></b>
             <br /> Flight Date is {this.props.placeholderDate}
             <br /> You both will fly to {this.props.placeholderDestination}
             <br /> Price from {this.props.placeholderOriginCity1}: {this.props.placeholderPrice1} 

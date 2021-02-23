@@ -4,6 +4,8 @@ import Map from './Map';
 import FormBox from './FormBox';
 import Info from './Info';
 import axios from 'axios';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 
 /**
@@ -22,6 +24,9 @@ interface LocationsProps {
   inputValue1: string;
   inputValue2: string;
   inputValueArray: string[];
+  info: string;
+  loading: boolean;
+  destinationCity: string;
 
   placeholderTotalPrice: string;
   placeholderPrice1: string;
@@ -43,6 +48,10 @@ class Main extends React.Component < {}, LocationsProps> {
       inputValue1: "",
       inputValue2: "",
       inputValueArray: ["",""],
+      info: "hide",
+      loading: false,
+      destinationCity: "",
+
       placeholderTotalPrice: "TBD",
       placeholderPrice1: "TBD",
       placeholderPrice2: "TBD",
@@ -71,7 +80,9 @@ class Main extends React.Component < {}, LocationsProps> {
       );
     }
     }
-
+    changeDestination = (destinationCity: string) => {
+      this.setState({destinationCity: destinationCity})
+      }
   updateCityList = (onlyCityList: string[]) => {
     this.setState({startCityList: onlyCityList})
   }
@@ -89,11 +100,13 @@ class Main extends React.Component < {}, LocationsProps> {
       console.log(this.state.inputValue2);
     }
   }
-  postAPI= () => {
+  postAPI = () => {
+    this.setState({loading: true}, () => {
     axios.post("/cityPost" , {input: this.state.inputValueArray}) //, {mode: "cors"})
         .then((response) => {       
           const data = response.data;
           this.setState({
+            loading: false,
             placeholderTotalPrice: (data.data[0].total_price),
             placeholderPrice1: (data.data[0].price_1),
             placeholderPrice2: (data.data[0].price_2),
@@ -101,11 +114,17 @@ class Main extends React.Component < {}, LocationsProps> {
             placeholderOriginCity1: (data.data[0].origin_city_name_1),
             placeholderOriginCity2:(data.data[0].origin_city_name_2),
             placeholderDestination:(data.data[0].dest_city_name_1),
+            info: "show",
           })
         }).catch((error) => {
           console.log("error: ", error);
           alert("An error occurred.");
       });
+    });
+  }
+
+  showInfo = () => {
+
   }
 
   componentDidUpdate(prevState: any) {
@@ -137,20 +156,29 @@ class Main extends React.Component < {}, LocationsProps> {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn how to code works
+            Learn how the code works...
           </a>
-          
-          <Info 
-            placeholderTotalPrice={this.state.placeholderTotalPrice}
-            placeholderPrice1={this.state.placeholderPrice1}
-            placeholderPrice2={this.state.placeholderPrice2}
-            placeholderDate={this.state.placeholderDate}
-            placeholderOriginCity1={this.state.placeholderOriginCity1}
-            placeholderOriginCity2={this.state.placeholderOriginCity2}
-            placeholderDestination={this.state.placeholderDestination}
-          />
+          {this.state.loading ? 
+            <div className="small">
+              <Spinner animation="grow" className="small"/>
+              <Spinner animation="grow" className="small"/>
+              <Spinner animation="grow" className="small"/>
+            </div>
+             : <Info 
+                info = {this.state.info}
+                placeholderTotalPrice={this.state.placeholderTotalPrice}
+                placeholderPrice1={this.state.placeholderPrice1}
+                placeholderPrice2={this.state.placeholderPrice2}
+                placeholderDate={this.state.placeholderDate}
+                placeholderOriginCity1={this.state.placeholderOriginCity1}
+                placeholderOriginCity2={this.state.placeholderOriginCity2}
+                placeholderDestination={this.state.placeholderDestination}
+              />
+          }
+            
         <FormBox 
-          changeStart={this.changeStart} 
+          changeStart={this.changeStart}
+          destinationCity={this.state.destinationCity}
           startCityList={this.state.startCityList}
           inputValue1={this.state.inputValue1}
           inputValue2={this.state.inputValue2}
@@ -160,6 +188,7 @@ class Main extends React.Component < {}, LocationsProps> {
         </div>
         <Map 
           updateCityList={this.updateCityList}
+          destinationCity={this.state.destinationCity}
           inputValue1={this.state.inputValue1}
           inputValue2={this.state.inputValue2}
         />

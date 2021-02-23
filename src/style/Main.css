@@ -9,8 +9,7 @@
     padding: 1em;
   }
 
-  .small p {
-    font-size: 1em;
+  .small {
     padding: 1vh;
   }
 
@@ -44,5 +43,17 @@
       transform: rotate(360deg);
     }
   }
+
+  .show {
+    display: block;
+    color: white;
+
+  }
+  .hide {
+    display: none;
+    color: #00303f;
+
+  }
+
   
   

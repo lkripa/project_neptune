@@ -3,6 +3,7 @@ import { Form, FormControl, Dropdown, Container, Row, Col } from 'react-bootstra
 import './style/FormBox.css';
 import Menu from './DropDownMenu';
 
+
 /**
  * This is the User Form component.
  */
@@ -16,6 +17,7 @@ interface FuncProps {
  startCityList: string[];
  inputValue1: string;
  inputValue2: string;
+ destinationCity: string;
 //  cityCoords: number[];
 //  startCity: string;
 }
@@ -95,6 +97,33 @@ class FormBox extends React.Component <FuncProps> {
                     isOne={false} 
                     startCityList={this.props.startCityList}
                     inputValue={this.props.inputValue2}
+                    // cityCoords={this.props.cityCoords}
+                    // updateStartCity={this.props.updateStartCity}
+                    //startCity={this.props.startCity}
+                  />
+                }
+            </Dropdown>
+            </Col>
+            </Row>
+            <Row>
+            <Col>
+            <Dropdown className="padding">
+                <Dropdown.Toggle variant="info" id="dropdown-basic">
+                 <FormControl 
+                  type="text" 
+                  placeholder="Destination" 
+                  className="padding mr-sm-2" 
+                  id="myInput2"
+                  value={this.props.destinationCity}
+                  onChange={() => this.filter("myInput3")}
+                />
+                </Dropdown.Toggle>
+                {(this.props.inputValue2.length >=3 ) &&
+                  <Menu 
+                    changeStart={this.props.changeStart} 
+                    isOne={false} 
+                    startCityList={this.props.startCityList}
+                    inputValue={this.props.destinationCity}
                     // cityCoords={this.props.cityCoords}
                     // updateStartCity={this.props.updateStartCity}
                     //startCity={this.props.startCity}
