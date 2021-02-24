@@ -16,8 +16,7 @@ import Spinner from 'react-bootstrap/Spinner';
 // ? See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNRESET).
 
 // TODO: 
-//      * Click on the city to see all the options
-//      * Create Modal Popup for different date options
+//      * Click on the city to see all the options for a Modal Popup for different date options
 //      * Create a page for the returns
 //      * Set up online server
 
@@ -38,6 +37,8 @@ interface LocationsProps {
   placeholderOriginCity1: string;
   placeholderOriginCity2: string;
   placeholderDestination: string;
+  fullList: [];
+  listOfDates: string[];
   
 }
 
@@ -63,7 +64,9 @@ class Main extends React.Component < {}, LocationsProps> {
       placeholderOriginCity1: "TBD",
       placeholderOriginCity2: "TBD",
       placeholderDestination: "TBD",
-    };
+      fullList: [], 
+      listOfDates: [],
+    }
   }
   // change origin cities for API Call
   changeStart = (isOne: boolean, city: string) => {
@@ -156,13 +159,26 @@ class Main extends React.Component < {}, LocationsProps> {
             placeholderOriginCity1: (data.data[0].origin_city_name_1),
             placeholderOriginCity2:(data.data[0].origin_city_name_2),
             placeholderDestination:(data.data[0].dest_city_name_1),
+            fullList: data.data,
             info: "show",
           })
+          this.setState({listOfDates: this.sortDates(this.state.fullList)}, () => { console.log(this.state.listOfDates)})
         }).catch((error) => {
           console.log("error: ", error);
           alert("Unfortunately, no flights were found. Please try again.");
       });
     });
+  }
+
+  sortDates = (fullList: any[] ) => {
+    let tempList: any[] = []
+    fullList.forEach((entry: any, index: Number) => {
+      if (!(tempList.find(elem => elem.date === entry.date_1))) {
+        tempList.push({ "date": entry.date_1, "totalPrice": entry.total_price })
+      }
+    });
+    console.log("tempList:", tempList);
+    return (tempList);
   }
 
   // call api after user selects origin and destination cities
@@ -227,6 +243,14 @@ class Main extends React.Component < {}, LocationsProps> {
           destinationCity={this.state.destinationCity}
           inputValue1={this.state.inputValue1}
           inputValue2={this.state.inputValue2}
+          placeholderTotalPrice={this.state.placeholderTotalPrice}
+          placeholderPrice1={this.state.placeholderPrice1}
+          placeholderPrice2={this.state.placeholderPrice2}
+          placeholderDate={this.state.placeholderDate}
+          placeholderOriginCity1={this.state.placeholderOriginCity1}
+          placeholderOriginCity2={this.state.placeholderOriginCity2}
+          placeholderDestination={this.state.placeholderDestination}
+          listOfDates={this.state.listOfDates}
         />
       </div>
     );

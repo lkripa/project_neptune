@@ -23,10 +23,11 @@ class Info extends React.Component <LocationsProps> {
       <div className={this.props.info}>
           <p>
             <b><u>Cheapest Total Price is {this.props.placeholderTotalPrice} EUR</u></b>
-            <br /> Flight Date is {this.props.placeholderDate}
-            <br /> You both will fly to {this.props.placeholderDestination} : One-Way
+            {/* <br /> You both will fly to {this.props.placeholderDestination}: One-Way */}
             <br /> Price from {this.props.placeholderOriginCity1}: {this.props.placeholderPrice1} 
             <br /> Price from {this.props.placeholderOriginCity2}: {this.props.placeholderPrice2}
+            <br /> Flight Date is {this.props.placeholderDate}
+            <br /><b>Click on the destination city to view more dates!</b>
           </p>
       </div>
     );

@@ -2,7 +2,6 @@ import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import './style/Map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
 import { destinationCityFormat, originCityFormat } from './data/cityGeoJsonFormat.js';
 import { greatCircle, point } from '@turf/turf';
 import { cityCodes } from './data/cityCodes.js';
@@ -14,7 +13,8 @@ import { accessToken } from './data/config.js';
 
 // ? Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
 // ? Map@http://localhost:3000/static/js/main.chunk.js:1259:5
-
+// TODO:
+//      * When you click on the date, you navigate to another page with the details of the flight
 mapboxgl.accessToken = accessToken
 
 class Map extends React.Component {
@@ -148,19 +148,28 @@ class Map extends React.Component {
       { 
         // Reload the newly clicked destination to show flight lines
         this.end = marker.geometry.coordinates;
-        // this.setPopupmap.removeSource('flight_lines')
         this.removeStartLines();
         this.drawLines();
       });
-      // var popup = new mapboxgl.Popup({ offset: 25 }).setText(
-      //   'Flight Information Goes Here'
-      // );
-       this.destinationMarker = new mapboxgl.Marker(ed, { offset: [0, -23] })
+      var popup = new mapboxgl.Popup({ offset: 25, className: 'scroll' }).setHTML(
+        `<div className="scroll">
+            <p>
+              ${this.showListOfDates()}
+            </p>
+        </div>`
+      );
+      this.destinationMarker = new mapboxgl.Marker(ed, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
-        // .setPopup(popup)
+        .setPopup(popup)
         .addTo(this.map);
-        this.markerArray.push(this.destinationMarker);
+      this.markerArray.push(this.destinationMarker);
     });
+  }
+
+  showListOfDates = () => {
+    console.log("listOfDates:", this.props.listOfDates);
+    // Create popup for more dates
+    return this.props.listOfDates.map(elem => `<br /> Date: ${elem.date}, Price from ${elem.totalPrice} EUR`);
   }
 
   // Get city coodinates from geojson file
@@ -228,6 +237,7 @@ class Map extends React.Component {
 
   // Update Coordinates from FormBox onto Map
   componentDidUpdate(prevProps, prevState) {
+    console.log("again")
     // Check to see if there was an update for the city name to get coordinates
     if (this.props.inputValue1 !== prevProps.inputValue1){
       
@@ -249,7 +259,8 @@ class Map extends React.Component {
     // Check to see if there was an update and that both start locations have been selected
     if (((prevState.points1 !== this.state.points1) || 
          (prevState.points2 !== this.state.points2) || 
-         (prevState.pointDestination !== this.state.pointDestination)) && (
+         (prevState.pointDestination !== this.state.pointDestination) || (this.props.listOfDates !== prevProps.listOfDates)) &&
+         (
       (this.state.points1[0] !== 0) && 
       (this.state.points1[1] !== 0) && 
       (this.state.points2[0] !== 0) && 
@@ -268,11 +279,15 @@ class Map extends React.Component {
         if (this.hasMarkers) {
           this.removeMarkers();
         }
+        this.showListOfDates();
         // Add new markers and lines to map
         this.addStartMarkers();
         this.addDestinationMarkers();
         this.drawLines();
         }
+    // if (this.props.listOfDates !== prevProps.listOfDates) {
+    //   this.showListOfDates()
+    // }
   }
 
   render() {
