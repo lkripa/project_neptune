@@ -5,6 +5,8 @@ import {Dropdown} from 'react-bootstrap';
  * This is the Menu component for the start Locations.
  */
 
+ // TODO: Update dropdown menu to sematic ui
+
 interface FuncProps {
   changeStart(isOne: boolean, city: string): any;
   isOne: boolean;
@@ -22,9 +24,8 @@ class Menu extends React.Component <FuncProps> {
             ? <Dropdown.Item 
                 key={city+index} 
                 onClick={() => {
-                  //TODO problem is here: UNTIL the cityCoords update first, then changeStart() work
                   this.props.changeStart(this.props.isOne, city);
-              }}>
+                }}>
                 {city}
               </Dropdown.Item>
             : <></> // TODO fix error here with children need "key"

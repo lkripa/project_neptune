@@ -11,10 +11,15 @@ import Spinner from 'react-bootstrap/Spinner';
 /**
  * This is the Main component of the App.
  */
+
 // ? Check for this error : Proxy error: Could not proxy request /cityPost from localhost:3000 to http://127.0.0.1:5000/.
 // ? See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNRESET).
-// ! Fix after change of city to call API
-// TODO: Click on the city to see all the options
+
+// TODO: 
+//      * Click on the city to see all the options
+//      * Create Modal Popup for different date options
+//      * Create a page for the returns
+//      * Set up online server
 
 interface LocationsProps {
   startCityList: string[];
@@ -38,6 +43,7 @@ interface LocationsProps {
 
 class Main extends React.Component < {}, LocationsProps> {
   isFirst = true;
+
   constructor(props:LocationsProps) {
     super(props);
     this.state = {
@@ -59,7 +65,7 @@ class Main extends React.Component < {}, LocationsProps> {
       placeholderDestination: "TBD",
     };
   }
-
+  // change origin cities for API Call
   changeStart = (isOne: boolean, city: string) => {
     this.setState({startCityName: city})
     if (isOne) {
@@ -79,6 +85,7 @@ class Main extends React.Component < {}, LocationsProps> {
     }
   }
 
+  // change destination city for API Call
   changeDestination = (_: boolean, destinationCity: string) => {
     let updateValueArray: string[] = [this.state.inputValueArray[0], this.state.inputValueArray[1], destinationCity]
     this.setState({
@@ -89,10 +96,12 @@ class Main extends React.Component < {}, LocationsProps> {
     );
   }
 
+  // checks for valid cities to show on menu selection
   updateCityList = (onlyCityList: string[]) => {
     this.setState({startCityList: onlyCityList})
   }
 
+  // in formbox, the state is changed for every letter typed
   changeLetter = (letter: string, person: string) => {
     if (person === "myInput") {
       this.setState({
@@ -111,7 +120,13 @@ class Main extends React.Component < {}, LocationsProps> {
       console.log(this.state.destinationCity);
     }
   }
-  
+
+  // when form block clicked, api can be called
+  callAPI = () => {
+    this.isFirst = true;
+  }
+
+  // api get and post
   postAPI = () => {
     this.setState({loading: true}, () => {
     axios.post("/cityPost" , 
@@ -150,10 +165,7 @@ class Main extends React.Component < {}, LocationsProps> {
     });
   }
 
-  callAPI = () => {
-    this.isFirst = true;
-  }
-
+  // call api after user selects origin and destination cities
   componentDidUpdate(prevState: any) {
     if ((this.isFirst) && 
         ((this.state.inputValueArray[0] !== "") && (this.state.inputValueArray[1] !== "") && (this.state.inputValueArray[2] !== ""))

@@ -2,8 +2,8 @@ import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import './style/Map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
-// import { startLocations } from './startLocations.js';
-import { destinations } from './data/destination.js';
+
+import { destinationCityFormat, originCityFormat } from './data/cityGeoJsonFormat.js';
 import { greatCircle, point } from '@turf/turf';
 import { cityCodes } from './data/cityCodes.js';
 import { accessToken } from './data/config.js';
@@ -11,12 +11,15 @@ import { accessToken } from './data/config.js';
 /**
  * This is the Map component.
  */
+
 // ? Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
 // ? Map@http://localhost:3000/static/js/main.chunk.js:1259:5
 
 mapboxgl.accessToken = accessToken
 
 class Map extends React.Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     // Props for map mount location
@@ -30,13 +33,16 @@ class Map extends React.Component {
     };
 
     this.myRef = React.createRef();
-    // Initial end point and will rotate through other destination points when clicked
+
+    // Initial end point and will rotate through other destination points when clicked (for Map Lines)
     this.end = point(this.state.pointDestination)//destinations.features[0].geometry.coordinates);//[9.283447, 40.078072]); // Sardinia
-    
+    this.destinationGeojson = destinationCityFormat
+    this.originGeojson = originCityFormat
+
     // Start City List for FormBox Menu
     this.demoCityList = [];
    
-    // Initial positions for drawing line
+    // Initial positions for drawing line (all at [0,0])
     this.greatCircle1 = greatCircle(point(this.state.points1), this.end, {'name': 'Person1 Line'});
     this.greatCircle2 = greatCircle(point(this.state.points2), this.end, {'name': 'Person2 Line'});
     
@@ -50,7 +56,6 @@ class Map extends React.Component {
     // Map Initial Variables
     this.map = null;
     this.startMarker = null;
-    this.start = null;
     this.cityCoordinates = null;
   }
   
@@ -61,7 +66,7 @@ class Map extends React.Component {
     this.hasLines = false;
   }
 
-  // Removes the layers and source coordinates for markers
+  // Removes the layers and source coordinates for all markers on map
   removeMarkers = () => {
     this.markerArray.forEach((marker) => {
       marker.remove();
@@ -86,7 +91,7 @@ class Map extends React.Component {
         'features': [ this.greatCircle1, this.greatCircle2 ]
       }
     });
-    // Add layer to map
+    // Add line layer to map
     this.map.addLayer({
       'id': 'flight_lines',
       'type': 'line',
@@ -103,48 +108,20 @@ class Map extends React.Component {
   addStartMarkers = () => {
     this.hasMarkers = true
     // Point coordinates from FormBox
-    this.start = { 
-      // Person 1
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": this.state.points1
-          },
-          "properties": {
-            "city": "",
-            "country": "",
-          }
-        },
-        { 
-          // Person 2
-          "type": "Feature",
-          "geometry": {
-            "type": "Point",
-            "coordinates": this.state.points2
-          },
-          "properties": {
-            "city": "",
-            "country": "",
-          }
-        }
-      ]
-    };
-    
+    this.originGeojson.features[0].geometry.coordinates = this.state.points1
+    this.originGeojson.features[0].properties.city = this.props.inputValue1
+    this.originGeojson.features[1].geometry.coordinates = this.state.points2
+    this.originGeojson.features[1].properties.city = this.props.inputValue2
     // Add coordinates to map
     this.map.addSource('startLocations', {
       type: 'geojson',
-      data: this.start
+      data: this.originGeojson
     });
-
-    //Add markers on map and store for deletion
-    this.start.features.forEach(marker => {
+    //Add markers on map and store in markerArray for deletion
+    this.originGeojson.features.forEach(marker => {
       // Create a div element for the marker.
       var el = document.createElement('div');
       el.className = 'marker';
- 
       this.startMarker = new mapboxgl.Marker(el, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
         .addTo(this.map);
@@ -154,14 +131,16 @@ class Map extends React.Component {
 
   // Adds the markers for destinations
   addDestinationMarkers = () => {
-    destinations.features[0].geometry.coordinates = this.state.pointDestination
+    this.destinationGeojson.features[0].geometry.coordinates = this.state.pointDestination
+    this.destinationGeojson.features[0].properties.city = this.props.destinationCity
+    // update line coordinates
     this.end = this.state.pointDestination
     this.map.addSource('destinations', {
       type: 'geojson',
-      data: destinations
+      data: this.destinationGeojson
     });
     // Destination marker load
-    destinations.features.forEach(marker => {
+    this.destinationGeojson.features.forEach(marker => {
       var ed = document.createElement('div');
       ed.id = "marker-" + marker.properties.id;
       ed.className = 'destination_marker';
@@ -184,35 +163,6 @@ class Map extends React.Component {
     });
   }
 
-  // Mounting map 
-  componentDidMount() {
-    // create list of city names
-    this.getCityNames();
-    this.map = new mapboxgl.Map({
-      container: this.myRef.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [this.state.lng, this.state.lat],
-      zoom: this.state.zoom,
-      minZoom: 1.40
-    });
-
-    // Set loading map view
-    this.map.on('move', () => {
-      this.setState({
-      lng: this.map.getCenter().lng.toFixed(4),
-      lat: this.map.getCenter().lat.toFixed(4),
-      zoom: this.map.getZoom().toFixed(2)
-      });
-    });
-    // Add destination coordinates on map
-    // this.map.on('load', ()=> {
-    //   this.map.addSource('destinations', {
-    //     type: 'geojson',
-    //     data: destinations
-    //   });
-    // });
-  }
-
   // Get city coodinates from geojson file
   getCityCoordinates = (cityName) => {
     cityCodes.getFeaturesByProperty = function(key, value) {
@@ -228,8 +178,6 @@ class Map extends React.Component {
     try {
       var feats = cityCodes.getFeaturesByProperty('city_user', cityName);
       var coords = feats[0].geometry.coordinates;
-      // this.props.updateCityCoords(coords);
-      // this.cityCoordinates = coords;
       console.log("cityCoords", cityName, coords);
     } catch (error) {
       console.log("cityCoods: does not exist")
@@ -237,6 +185,7 @@ class Map extends React.Component {
     return coords
   }
 
+  // get list of viable city names from user input
   getCityNames = () => {
     var numberCities = cityCodes.features.length;
     for (var i = 0; i < numberCities; i++) {
@@ -248,7 +197,36 @@ class Map extends React.Component {
     this.props.updateCityList(this.demoCityList);
   };
 
-  // Update Coordinates from FormBox
+  // Mounting map 
+  componentDidMount() {
+    this._isMounted = true;
+    if (this._isMounted) {
+      // create list of city names
+      this.getCityNames();
+      this.map = new mapboxgl.Map({
+        container: this.myRef.current,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [this.state.lng, this.state.lat],
+        zoom: this.state.zoom,
+        minZoom: 1.40
+      });
+      // Set loading map view
+      this.map.on('move', () => {
+        this.setState({
+        lng: this.map.getCenter().lng.toFixed(4),
+        lat: this.map.getCenter().lat.toFixed(4),
+        zoom: this.map.getZoom().toFixed(2)
+        });
+      });
+    }
+  }
+
+  // checking if map will unmount
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  // Update Coordinates from FormBox onto Map
   componentDidUpdate(prevProps, prevState) {
     // Check to see if there was an update for the city name to get coordinates
     if (this.props.inputValue1 !== prevProps.inputValue1){
