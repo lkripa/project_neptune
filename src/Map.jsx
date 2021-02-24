@@ -11,7 +11,8 @@ import { accessToken } from './data/config.js';
 /**
  * This is the Map component.
  */
-// ! Connect Destination changes to screen
+// ? Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
+// ? Map@http://localhost:3000/static/js/main.chunk.js:1259:5
 
 mapboxgl.accessToken = accessToken
 
@@ -30,8 +31,8 @@ class Map extends React.Component {
 
     this.myRef = React.createRef();
     // Initial end point and will rotate through other destination points when clicked
-    this.end = point([9.283447, 40.078072]); // Sardinia
-
+    this.end = point(this.state.pointDestination)//destinations.features[0].geometry.coordinates);//[9.283447, 40.078072]); // Sardinia
+    
     // Start City List for FormBox Menu
     this.demoCityList = [];
    
@@ -50,7 +51,6 @@ class Map extends React.Component {
     this.map = null;
     this.startMarker = null;
     this.start = null;
-
     this.cityCoordinates = null;
   }
   
@@ -62,11 +62,12 @@ class Map extends React.Component {
   }
 
   // Removes the layers and source coordinates for markers
-  removeStartMarkers = () => {
+  removeMarkers = () => {
     this.markerArray.forEach((marker) => {
       marker.remove();
     })
     this.map.removeSource('startLocations');
+    this.map.removeSource('destinations');
     this.hasMarkers = false;
   }
 
@@ -131,6 +132,7 @@ class Map extends React.Component {
         }
       ]
     };
+    
     // Add coordinates to map
     this.map.addSource('startLocations', {
       type: 'geojson',
@@ -152,6 +154,12 @@ class Map extends React.Component {
 
   // Adds the markers for destinations
   addDestinationMarkers = () => {
+    destinations.features[0].geometry.coordinates = this.state.pointDestination
+    this.end = this.state.pointDestination
+    this.map.addSource('destinations', {
+      type: 'geojson',
+      data: destinations
+    });
     // Destination marker load
     destinations.features.forEach(marker => {
       var ed = document.createElement('div');
@@ -168,10 +176,11 @@ class Map extends React.Component {
       // var popup = new mapboxgl.Popup({ offset: 25 }).setText(
       //   'Flight Information Goes Here'
       // );
-       new mapboxgl.Marker(ed, { offset: [0, -23] })
+       this.destinationMarker = new mapboxgl.Marker(ed, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
         // .setPopup(popup)
         .addTo(this.map);
+        this.markerArray.push(this.destinationMarker);
     });
   }
 
@@ -196,12 +205,12 @@ class Map extends React.Component {
       });
     });
     // Add destination coordinates on map
-    this.map.on('load', ()=> {
-      this.map.addSource('destinations', {
-        type: 'geojson',
-        data: destinations
-      });
-    })
+    // this.map.on('load', ()=> {
+    //   this.map.addSource('destinations', {
+    //     type: 'geojson',
+    //     data: destinations
+    //   });
+    // });
   }
 
   // Get city coodinates from geojson file
@@ -241,32 +250,36 @@ class Map extends React.Component {
 
   // Update Coordinates from FormBox
   componentDidUpdate(prevProps, prevState) {
-    // let didChange = false;
     // Check to see if there was an update for the city name to get coordinates
     if (this.props.inputValue1 !== prevProps.inputValue1){
-      // didChange = true;
+      
       let coords = this.getCityCoordinates(this.props.inputValue1);
       coords != null && this.setState({points1: coords}, () => 
         console.log("points1", coords));
     }
     if (this.props.inputValue2 !== prevProps.inputValue2){
-      // didChange = true;
+      
       let coords = this.getCityCoordinates(this.props.inputValue2);
       coords != null && this.setState({points2: coords}, () => 
         console.log("points2", coords));
     }
     if (this.props.destinationCity !== prevProps.destinationCity){
-      // didChange = true;
       let coords = this.getCityCoordinates(this.props.destinationCity);
       coords != null && this.setState({pointDestination: coords}, () => 
         console.log("pointDestination", coords));
     }
     // Check to see if there was an update and that both start locations have been selected
-    if (((prevState.points1 !== this.state.points1) || (prevState.points2 !== this.state.points2)) && (
+    if (((prevState.points1 !== this.state.points1) || 
+         (prevState.points2 !== this.state.points2) || 
+         (prevState.pointDestination !== this.state.pointDestination)) && (
       (this.state.points1[0] !== 0) && 
       (this.state.points1[1] !== 0) && 
       (this.state.points2[0] !== 0) && 
-      (this.state.points2[1] !== 0))) {
+      (this.state.points2[1] !== 0) &&
+      (this.state.pointDestination[0] !== 0) && 
+      (this.state.pointDestination[1] !== 0) 
+
+    )) {
         console.log("Both locations selected: ", this.state.points1, this.state.points2);
         
         // Checks if map has lines 
@@ -275,7 +288,7 @@ class Map extends React.Component {
         }
         // Checks if map has markers 
         if (this.hasMarkers) {
-          this.removeStartMarkers();
+          this.removeMarkers();
         }
         // Add new markers and lines to map
         this.addStartMarkers();

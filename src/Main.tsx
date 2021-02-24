@@ -11,12 +11,10 @@ import Spinner from 'react-bootstrap/Spinner';
 /**
  * This is the Main component of the App.
  */
-
-// * Create Processing Symbol for waiting time
 // ? Check for this error : Proxy error: Could not proxy request /cityPost from localhost:3000 to http://127.0.0.1:5000/.
 // ? See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNRESET).
-// * Change so that <Info /> pops up after request call
 // ! Fix after change of city to call API
+// TODO: Click on the city to see all the options
 
 interface LocationsProps {
   startCityList: string[];
@@ -47,7 +45,7 @@ class Main extends React.Component < {}, LocationsProps> {
       startCityName: "",
       inputValue1: "",
       inputValue2: "",
-      inputValueArray: ["",""],
+      inputValueArray: ["","",""],
       info: "hide",
       loading: false,
       destinationCity: "",
@@ -65,24 +63,32 @@ class Main extends React.Component < {}, LocationsProps> {
   changeStart = (isOne: boolean, city: string) => {
     this.setState({startCityName: city})
     if (isOne) {
-      let updateValueArray: string[] = [city, this.state.inputValueArray[1]]
+      let updateValueArray: string[] = [city, this.state.inputValueArray[1],this.state.inputValueArray[2]]
       this.setState({
         inputValue1: city,
         inputValueArray: updateValueArray}, () => 
       console.log("cityValue1:", this.state.inputValue1, isOne, this.state.inputValueArray)
       );
     } else {
-      let updateValueArray: string[] = [this.state.inputValueArray[0], city]
+      let updateValueArray: string[] = [this.state.inputValueArray[0], city, this.state.inputValueArray[2]]
       this.setState({
         inputValue2: city,
         inputValueArray: updateValueArray}, () => 
       console.log("cityValue2:", this.state.inputValue2, isOne, this.state.inputValueArray)
       );
     }
-    }
-    changeDestination = (destinationCity: string) => {
-      this.setState({destinationCity: destinationCity})
-      }
+  }
+
+  changeDestination = (_: boolean, destinationCity: string) => {
+    let updateValueArray: string[] = [this.state.inputValueArray[0], this.state.inputValueArray[1], destinationCity]
+    this.setState({
+      destinationCity: destinationCity,
+      inputValueArray: updateValueArray,
+    }, () => 
+      console.log("destinationCity:", this.state.inputValueArray)
+    );
+  }
+
   updateCityList = (onlyCityList: string[]) => {
     this.setState({startCityList: onlyCityList})
   }
@@ -93,18 +99,39 @@ class Main extends React.Component < {}, LocationsProps> {
         inputValue1: letter
       })
       console.log(this.state.inputValue1);
-    } else {
+    } else if (person === "myInput2") {
       this.setState({
         inputValue2: letter
       })
       console.log(this.state.inputValue2);
+    } else {
+      this.setState({
+        destinationCity: letter
+      })
+      console.log(this.state.destinationCity);
     }
   }
+  
   postAPI = () => {
     this.setState({loading: true}, () => {
-    axios.post("/cityPost" , {input: this.state.inputValueArray}) //, {mode: "cors"})
+    axios.post("/cityPost" , 
+        {
+          inputOriginCities: [this.state.inputValueArray[0],this.state.inputValueArray[1]],
+          inputDestinationCity: this.state.inputValueArray[2],
+        }) //, {mode: "cors"})
         .then((response) => {       
           const data = response.data;
+          // Reset inputs
+          if (!response.data.data){
+            this.isFirst = true;
+            this.setState({
+              loading: false,
+              inputValueArray: ["","",""],
+              inputValue1: "",
+              inputValue2: "",
+              destinationCity: "",
+            })
+          }
           this.setState({
             loading: false,
             placeholderTotalPrice: (data.data[0].total_price),
@@ -118,27 +145,22 @@ class Main extends React.Component < {}, LocationsProps> {
           })
         }).catch((error) => {
           console.log("error: ", error);
-          alert("An error occurred.");
+          alert("Unfortunately, no flights were found. Please try again.");
       });
     });
   }
 
-  showInfo = () => {
-
+  callAPI = () => {
+    this.isFirst = true;
   }
 
   componentDidUpdate(prevState: any) {
-    if ((this.isFirst) && ((this.state.inputValueArray[0] !== "") && (this.state.inputValueArray[1] !== ""))) {
+    if ((this.isFirst) && 
+        ((this.state.inputValueArray[0] !== "") && (this.state.inputValueArray[1] !== "") && (this.state.inputValueArray[2] !== ""))
+    ) {
         this.postAPI()
         this.isFirst = false;
     }
-    // ! Add update the city and run API again here
-    // if (!(this.isFirst) && (
-    //   (prevState.inputValueArray[0] !== "") && (prevState.inputValueArray[1] !== "")
-    //   )) {
-    //   this.postAPI()
-    //   this.isFirst = false;
-    // }
   }
 
   render() {
@@ -178,6 +200,8 @@ class Main extends React.Component < {}, LocationsProps> {
             
         <FormBox 
           changeStart={this.changeStart}
+          changeDestination={this.changeDestination}
+          callAPI={this.callAPI}
           destinationCity={this.state.destinationCity}
           startCityList={this.state.startCityList}
           inputValue1={this.state.inputValue1}

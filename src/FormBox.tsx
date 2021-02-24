@@ -11,15 +11,14 @@ import Menu from './DropDownMenu';
  // TODO: add Enter key to also act as "select" button
 
 interface FuncProps {
- changeStart(isOne: boolean , city: string): any;
+ changeStart(isOne: boolean, city: string): any;
  changeLetter(letter: string, person: string): any;
-//  updateStartCity(startCity: string): any;
+ changeDestination(isOne: boolean, destinationCity: string): any;
+ callAPI(): any;
  startCityList: string[];
  inputValue1: string;
  inputValue2: string;
  destinationCity: string;
-//  cityCoords: number[];
-//  startCity: string;
 }
 
 class FormBox extends React.Component <FuncProps> {
@@ -64,11 +63,12 @@ class FormBox extends React.Component <FuncProps> {
                       id="myInput"
                       value={this.props.inputValue1}
                       onChange={() => this.filter("myInput")}
+                      onClick={() => this.props.callAPI}
                     />
                   </Dropdown.Toggle>
                   {(this.props.inputValue1.length >= 3 ) &&
                     <Menu 
-                      changeStart={this.props.changeStart} 
+                      changeStart={this.props.changeStart}
                       isOne={true} 
                       startCityList={this.props.startCityList}
                       inputValue={this.props.inputValue1}
@@ -89,11 +89,12 @@ class FormBox extends React.Component <FuncProps> {
                   id="myInput2"
                   value={this.props.inputValue2}
                   onChange={() => this.filter("myInput2")}
+                  onClick={() => this.props.callAPI}
                 />
                 </Dropdown.Toggle>
                 {(this.props.inputValue2.length >=3 ) &&
                   <Menu 
-                    changeStart={this.props.changeStart} 
+                    changeStart={this.props.changeStart}
                     isOne={false} 
                     startCityList={this.props.startCityList}
                     inputValue={this.props.inputValue2}
@@ -113,20 +114,18 @@ class FormBox extends React.Component <FuncProps> {
                   type="text" 
                   placeholder="Destination" 
                   className="padding mr-sm-2" 
-                  id="myInput2"
+                  id="myInput3"
                   value={this.props.destinationCity}
                   onChange={() => this.filter("myInput3")}
+                  onClick={() => this.props.callAPI}
                 />
                 </Dropdown.Toggle>
-                {(this.props.inputValue2.length >=3 ) &&
+                {(this.props.destinationCity.length >=3 ) &&
                   <Menu 
-                    changeStart={this.props.changeStart} 
+                    changeStart={this.props.changeDestination} 
                     isOne={false} 
                     startCityList={this.props.startCityList}
                     inputValue={this.props.destinationCity}
-                    // cityCoords={this.props.cityCoords}
-                    // updateStartCity={this.props.updateStartCity}
-                    //startCity={this.props.startCity}
                   />
                 }
             </Dropdown>

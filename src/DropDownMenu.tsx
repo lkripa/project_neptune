@@ -7,12 +7,9 @@ import {Dropdown} from 'react-bootstrap';
 
 interface FuncProps {
   changeStart(isOne: boolean, city: string): any;
-  // updateStartCity(startCity: string): any;
   isOne: boolean;
   startCityList: string[];
   inputValue: string;
-  // cityCoords: number[];
-  // startCity: string;
 }
 
 class Menu extends React.Component <FuncProps> {	
@@ -26,7 +23,6 @@ class Menu extends React.Component <FuncProps> {
                 key={city+index} 
                 onClick={() => {
                   //TODO problem is here: UNTIL the cityCoords update first, then changeStart() work
-                  // this.props.updateStartCity(city, this.props.isOne);
                   this.props.changeStart(this.props.isOne, city);
               }}>
                 {city}
