@@ -16,7 +16,6 @@ import Spinner from 'react-bootstrap/Spinner';
 // ? See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNRESET).
 
 // TODO: 
-//      * Click on the city to see all the options for a Modal Popup for different date options
 //      * Create a page for the returns
 //      * Set up online server
 
@@ -135,7 +134,7 @@ class Main extends React.Component < {}, LocationsProps> {
     axios.post("/cityPost" , 
         {
           inputOriginCities: [this.state.inputValueArray[0],this.state.inputValueArray[1]],
-          inputDestinationCity: this.state.inputValueArray[2],
+          inputDestinationCity: [this.state.inputValueArray[2]],
         }) //, {mode: "cors"})
         .then((response) => {       
           const data = response.data;
