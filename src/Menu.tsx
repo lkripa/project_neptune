@@ -9,9 +9,11 @@ import { Dropdown } from 'react-bootstrap';
 
 interface FuncProps {
   changeStart(isOne: boolean, city: string): any;
+  callAPI(): any;
   isOne: boolean;
   startCityList: string[];
   inputValue: string;
+  
 }
 
 class Menu extends React.Component <FuncProps> {	
@@ -24,7 +26,8 @@ class Menu extends React.Component <FuncProps> {
             ? <Dropdown.Item 
                 key={city+index} 
                 onClick={() => {
-                  this.props.changeStart(this.props.isOne, city);
+                  this.props.changeStart(this.props.isOne, city)
+                  this.props.callAPI()
                 }}>
                 {city}
               </Dropdown.Item>

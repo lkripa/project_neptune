@@ -5,6 +5,7 @@ import FormBox from './FormBox';
 import Info from './Info';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
+import { serverURL } from './data/config.js';
 
 
 
@@ -28,6 +29,7 @@ interface LocationsProps {
   info: string;
   loading: boolean;
   destinationCity: string;
+  canAPI: boolean;
 
   placeholderTotalPrice: string;
   placeholderPrice1: string;
@@ -36,13 +38,15 @@ interface LocationsProps {
   placeholderOriginCity1: string;
   placeholderOriginCity2: string;
   placeholderDestination: string;
+  placeholderAirline1: string;
+  placeholderAirline2: string;
   fullList: [];
   listOfDates: string[];
   
 }
 
 class Main extends React.Component < {}, LocationsProps> {
-  isFirst = true;
+
 
   constructor(props:LocationsProps) {
     super(props);
@@ -55,6 +59,7 @@ class Main extends React.Component < {}, LocationsProps> {
       info: "hide",
       loading: false,
       destinationCity: "",
+      canAPI: true,
 
       placeholderTotalPrice: "TBD",
       placeholderPrice1: "TBD",
@@ -63,6 +68,8 @@ class Main extends React.Component < {}, LocationsProps> {
       placeholderOriginCity1: "TBD",
       placeholderOriginCity2: "TBD",
       placeholderDestination: "TBD",
+      placeholderAirline1: "TBD",
+      placeholderAirline2: "TBD",
       fullList: [], 
       listOfDates: [],
     }
@@ -125,13 +132,16 @@ class Main extends React.Component < {}, LocationsProps> {
 
   // when form block clicked, api can be called
   callAPI = () => {
-    this.isFirst = true;
+    this.setState({ 
+      canAPI: true,
+    })
   }
 
   // api get and post
   postAPI = () => {
+    let url = serverURL + "/cityPost"
     this.setState({loading: true}, () => {
-    axios.post("/cityPost" , 
+    axios.post(url, 
         {
           inputOriginCities: [this.state.inputValueArray[0],this.state.inputValueArray[1]],
           inputDestinationCity: [this.state.inputValueArray[2]],
@@ -140,8 +150,8 @@ class Main extends React.Component < {}, LocationsProps> {
           const data = response.data;
           // Reset inputs
           if (!response.data.data){
-            this.isFirst = true;
             this.setState({
+              canAPI: true,
               loading: false,
               inputValueArray: ["","",""],
               inputValue1: "",
@@ -158,6 +168,8 @@ class Main extends React.Component < {}, LocationsProps> {
             placeholderOriginCity1: (data.data[0].origin_city_name_1),
             placeholderOriginCity2:(data.data[0].origin_city_name_2),
             placeholderDestination:(data.data[0].dest_city_name_1),
+            placeholderAirline1: (data.data[0].carrier_1),
+            placeholderAirline2: (data.data[0].carrier_2),
             fullList: data.data,
             info: "show",
           })
@@ -181,12 +193,13 @@ class Main extends React.Component < {}, LocationsProps> {
   }
 
   // call api after user selects origin and destination cities
-  componentDidUpdate(prevState: any) {
-    if ((this.isFirst) && 
+  componentDidUpdate() {
+    if ((this.state.canAPI === true) && 
         ((this.state.inputValueArray[0] !== "") && (this.state.inputValueArray[1] !== "") && (this.state.inputValueArray[2] !== ""))
     ) {
-        this.postAPI()
-        this.isFirst = false;
+        this.setState({ canAPI: false, loading: true, })
+        this.postAPI();
+        
     }
   }
 
@@ -222,6 +235,8 @@ class Main extends React.Component < {}, LocationsProps> {
                 placeholderOriginCity1={this.state.placeholderOriginCity1}
                 placeholderOriginCity2={this.state.placeholderOriginCity2}
                 placeholderDestination={this.state.placeholderDestination}
+                placeholderAirline1={this.state.placeholderAirline1}
+                placeholderAirline2={this.state.placeholderAirline2}
               />
           }
             

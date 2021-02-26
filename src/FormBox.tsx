@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, FormControl, Dropdown, Container, Row, Col } from 'react-bootstrap'; 
 import './style/FormBox.css';
-import Menu from './DropDownMenu';
+import Menu from './Menu';
 
 
 /**
@@ -63,7 +63,6 @@ class FormBox extends React.Component <FuncProps> {
                       id="myInput"
                       value={this.props.inputValue1}
                       onChange={() => this.filter("myInput")}
-                      onClick={() => this.props.callAPI}
                     />
                   </Dropdown.Toggle>
                   {(this.props.inputValue1.length >= 3 ) &&
@@ -72,6 +71,7 @@ class FormBox extends React.Component <FuncProps> {
                       isOne={true} 
                       startCityList={this.props.startCityList}
                       inputValue={this.props.inputValue1}
+                      callAPI={this.props.callAPI}
                       // cityCoords={this.props.cityCoords}
                       // updateStartCity={this.props.updateStartCity}
                       //startCity={this.props.startCity}
@@ -98,6 +98,7 @@ class FormBox extends React.Component <FuncProps> {
                     isOne={false} 
                     startCityList={this.props.startCityList}
                     inputValue={this.props.inputValue2}
+                    callAPI={this.props.callAPI}
                     // cityCoords={this.props.cityCoords}
                     // updateStartCity={this.props.updateStartCity}
                     //startCity={this.props.startCity}
@@ -126,6 +127,7 @@ class FormBox extends React.Component <FuncProps> {
                     isOne={false} 
                     startCityList={this.props.startCityList}
                     inputValue={this.props.destinationCity}
+                    callAPI={this.props.callAPI}
                   />
                 }
             </Dropdown>

@@ -14,6 +14,8 @@ interface LocationsProps {
   placeholderOriginCity1: string;
   placeholderOriginCity2: string;
   placeholderDestination: string;
+  placeholderAirline1: string;
+  placeholderAirline2: string;
 }
 
 class Info extends React.Component <LocationsProps> {
@@ -22,13 +24,13 @@ class Info extends React.Component <LocationsProps> {
     return (
       <div className={this.props.info}>
           <p>
-            <b><u>Cheapest Total Price is {this.props.placeholderTotalPrice} EUR</u></b>
-            {/* <br /> You both will fly to {this.props.placeholderDestination}: One-Way */}
-            <br /> Price from {this.props.placeholderOriginCity1}: {this.props.placeholderPrice1} 
-            <br /> Price from {this.props.placeholderOriginCity2}: {this.props.placeholderPrice2}
+            <b><u>Cheapest Total Price is {this.props.placeholderTotalPrice} EUR : One-Way</u></b>
+            {/* <br /> You both will fly to {this.props.placeholderDestination} */}
+            <br /> Price from {this.props.placeholderOriginCity1} to {this.props.placeholderDestination}: {this.props.placeholderPrice1} EUR on {this.props.placeholderAirline1}
+            <br /> Price from {this.props.placeholderOriginCity2} to {this.props.placeholderDestination}: {this.props.placeholderPrice2} EUR on {this.props.placeholderAirline2}
             <br /> Flight Date is {this.props.placeholderDate}
-            <br /><b>Click on the destination city to view more dates!</b>
           </p>
+          <b>Click on the destination city to view more dates!</b>
       </div>
     );
   }

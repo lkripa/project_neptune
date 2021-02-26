@@ -52,7 +52,10 @@
   .hide {
     display: none;
     color: #00303f;
+  }
 
+  .padding-1{
+    padding: 1vh;
   }
 
   

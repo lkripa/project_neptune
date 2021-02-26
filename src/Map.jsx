@@ -239,7 +239,6 @@ class Map extends React.Component {
 
   // Update Coordinates from FormBox onto Map
   componentDidUpdate(prevProps, prevState) {
-    console.log("again")
     // Check to see if there was an update for the city name to get coordinates
     if (this.props.inputValue1 !== prevProps.inputValue1){
       
@@ -261,35 +260,32 @@ class Map extends React.Component {
     // Check to see if there was an update and that both start locations have been selected
     if (((prevState.points1 !== this.state.points1) || 
          (prevState.points2 !== this.state.points2) || 
-         (prevState.pointDestination !== this.state.pointDestination) || (this.props.listOfDates !== prevProps.listOfDates)) &&
-         (
-      (this.state.points1[0] !== 0) && 
-      (this.state.points1[1] !== 0) && 
-      (this.state.points2[0] !== 0) && 
-      (this.state.points2[1] !== 0) &&
-      (this.state.pointDestination[0] !== 0) && 
-      (this.state.pointDestination[1] !== 0) 
-
-    )) {
-        console.log("Both locations selected: ", this.state.points1, this.state.points2);
-        
-        // Checks if map has lines 
-        if (this.hasLines) {
-          this.removeStartLines();
-        }
-        // Checks if map has markers 
-        if (this.hasMarkers) {
-          this.removeMarkers();
-        }
-        this.showListOfDates();
-        // Add new markers and lines to map
-        this.addStartMarkers();
-        this.addDestinationMarkers();
-        this.drawLines();
-        }
-    // if (this.props.listOfDates !== prevProps.listOfDates) {
-    //   this.showListOfDates()
-    // }
+         (prevState.pointDestination !== this.state.pointDestination) || 
+         (prevProps.listOfDates !== this.props.listOfDates)) 
+         &&
+          (
+          (this.state.points1[0] !== 0) && 
+          (this.state.points1[1] !== 0) && 
+          (this.state.points2[0] !== 0) && 
+          (this.state.points2[1] !== 0) &&
+          (this.state.pointDestination[0] !== 0) && 
+          (this.state.pointDestination[1] !== 0)
+          )){
+              console.log("Locations selected: ", this.state.points1, this.state.points2, this.state.pointDestination);
+              // Checks if map has lines 
+              if (this.hasLines) {
+                this.removeStartLines();
+              }
+              // Checks if map has markers 
+              if (this.hasMarkers) {
+                this.removeMarkers();
+              }
+              this.showListOfDates();
+              // Add new markers and lines to map
+              this.addStartMarkers();
+              this.addDestinationMarkers();
+              this.drawLines();
+            }
   }
 
   render() {
