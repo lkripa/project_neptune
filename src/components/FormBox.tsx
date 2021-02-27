@@ -8,8 +8,6 @@ import Menu from './Menu';
  * This is the User Form component.
  */
 
- // TODO: add Enter key to also act as "select" button
-
 interface FuncProps {
  changeStart(isOne: boolean, city: string): any;
  changeLetter(letter: string, person: string): any;

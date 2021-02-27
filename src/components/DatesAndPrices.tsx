@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
  * This is the List of Dates component for popup modal of all the dates and prices.
  */
 
+// TODO: use the date as two states 1. Boolean: to change what is presented on the Modal 2. Date info to be shown in modal
 
 interface FuncProps {
   listOfDates: { date: string, totalPrice: string}[],
@@ -19,8 +20,8 @@ class DatesAndPrices extends React.Component <FuncProps> {
         <ul className="no-bullets">
         {this.props.listOfDates.map(elem => (
           <li>
-            <Button variant="link">
-            Date: {elem.date} Total Price from {elem.totalPrice}
+            <Button variant="link" onClick={() => console.log(elem.date)}>
+              Total Price from {elem.totalPrice} EUR on <b>{elem.date}</b>
             </Button>
           </li>
         ))}

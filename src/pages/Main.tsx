@@ -8,6 +8,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { serverURL } from '../data/config.js';
 import { Modal, Button } from 'react-bootstrap';
 import DatesAndPrices from '../components/DatesAndPrices';
+import { Dropdown } from 'semantic-ui-react';
 
 
 /**
@@ -20,6 +21,7 @@ import DatesAndPrices from '../components/DatesAndPrices';
 // TODO: 
 //      * Create a page for the returns
 //      * Change to component functions
+//      * When you click on the date, you navigate to another modal with the details of the flight appear
 
 interface LocationsProps {
   startCityList: string[];
@@ -186,7 +188,7 @@ class Main extends React.Component < {}, LocationsProps> {
       });
     });
   }
-
+  // take the full list and add the unique dates to the listOfDates list
   sortDates = (fullList: any[] ) => {
     let tempList: any[] = []
     fullList.forEach((entry: any, index: Number) => {
@@ -308,7 +310,6 @@ class Main extends React.Component < {}, LocationsProps> {
           placeholderOriginCity1={this.state.placeholderOriginCity1}
           placeholderOriginCity2={this.state.placeholderOriginCity2}
           placeholderDestination={this.state.placeholderDestination}
-          // listOfDates={this.state.listOfDates}
           handleShow={this.handleShow}
         />
       </div>

@@ -15,9 +15,6 @@ import { accessToken } from '../data/config.js';
 // ? Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount method.
 // ? Map@http://localhost:3000/static/js/main.chunk.js:1259:5
 
-// TODO:
-//      * When you click on the date, you navigate to another modal with the details of the flight appear
-
 mapboxgl.accessToken = accessToken
 
 class Map extends React.Component {

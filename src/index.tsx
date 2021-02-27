@@ -8,13 +8,14 @@ import About from './pages/About';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import reportWebVitals from './testScripts/reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'semantic-ui-css/semantic.min.css';
 
 /**
  * This is the navigation component.
  */
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
   <BrowserRouter>
     <NavBar />
     <Switch>
@@ -31,8 +32,8 @@ ReactDOM.render(
         <Footer />
       </Route>
     </Switch>
-  </BrowserRouter>
-  </React.StrictMode>,
+  </BrowserRouter>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 
