@@ -10,8 +10,6 @@ import { Modal, Button } from 'react-bootstrap';
 import DatesAndPrices from '../components/DatesAndPrices';
 
 
-
-
 /**
  * This is the Main component of the App.
  */
@@ -30,7 +28,7 @@ interface LocationsProps {
     key: string,
     value: string,
   }[];
-  startCityName: string;
+  // startCityName: string;
   inputValue1: string;
   inputValue2: string;
   inputValueArray: string[];
@@ -64,7 +62,7 @@ class Main extends React.Component < {}, LocationsProps> {
     super(props);
     this.state = {
       startCityList: [],
-      startCityName: "",
+      // startCityName: "",
       inputValue1: "",
       inputValue2: "",
       inputValueArray: ["","",""],
@@ -89,7 +87,7 @@ class Main extends React.Component < {}, LocationsProps> {
   }
   // change origin cities for API Call
   changeStart = (isOne: boolean, city: string) => {
-    this.setState({startCityName: city})
+    // this.setState({startCityName: city})
     if (isOne) {
       let updateValueArray: string[] = [city, this.state.inputValueArray[1],this.state.inputValueArray[2]]
       this.setState({
@@ -124,24 +122,24 @@ class Main extends React.Component < {}, LocationsProps> {
   }
 
   // in formbox, the state is changed for every letter typed
-  changeLetter = (letter: string, person: string) => {
-    if (person === "myInput") {
-      this.setState({
-        inputValue1: letter
-      })
-      console.log(this.state.inputValue1);
-    } else if (person === "myInput2") {
-      this.setState({
-        inputValue2: letter
-      })
-      console.log(this.state.inputValue2);
-    } else {
-      this.setState({
-        destinationCity: letter
-      })
-      console.log(this.state.destinationCity);
-    }
-  }
+  // changeLetter = (letter: string, person: string) => {
+  //   if (person === "myInput") {
+  //     this.setState({
+  //       inputValue1: letter
+  //     })
+  //     console.log(this.state.inputValue1);
+  //   } else if (person === "myInput2") {
+  //     this.setState({
+  //       inputValue2: letter
+  //     })
+  //     console.log(this.state.inputValue2);
+  //   } else {
+  //     this.setState({
+  //       destinationCity: letter
+  //     })
+  //     console.log(this.state.destinationCity);
+  //   }
+  // }
 
   // when form block clicked, api can be called
   callAPI = () => {
@@ -186,7 +184,7 @@ class Main extends React.Component < {}, LocationsProps> {
             fullList: data.data,
             info: "show",
           })
-          this.setState({listOfDates: this.sortDates(this.state.fullList)}, () => { console.log(this.state.listOfDates)})
+          this.setState({listOfDates: this.sortDates(this.state.fullList)})
         }).catch((error) => {
           console.log("error: ", error);
           alert("Unfortunately, no flights were found. Please try again.");
@@ -194,7 +192,7 @@ class Main extends React.Component < {}, LocationsProps> {
     });
   }
   // take the full list and add the unique dates to the listOfDates list
-  sortDates = (fullList: any[] ) => {
+  sortDates = (fullList: any[]) => {
     let tempList: any[] = []
     fullList.forEach((entry: any, index: Number) => {
       if (!(tempList.find(elem => elem.date === entry.date_1))) {
@@ -222,11 +220,11 @@ class Main extends React.Component < {}, LocationsProps> {
   // call api after user selects origin and destination cities
   componentDidUpdate() {
     if ((this.state.canAPI === true) && 
-        ((this.state.inputValueArray[0] !== "") && (this.state.inputValueArray[1] !== "") && (this.state.inputValueArray[2] !== ""))
-    ) {
-        this.setState({ canAPI: false, loading: true, })
-        this.postAPI();
-        
+       ((this.state.inputValueArray[0] !== "") && (this.state.inputValueArray[1] !== "") && (this.state.inputValueArray[2] !== ""))
+    ){
+      this.setState({ canAPI: false, loading: true, })
+      this.postAPI();
+      console.log("=== API CALLED ===")  
     }
   }
 
@@ -266,7 +264,6 @@ class Main extends React.Component < {}, LocationsProps> {
                 placeholderAirline2={this.state.placeholderAirline2}
               />
           }
-            
           <FormBox 
             changeStart={this.changeStart}
             changeDestination={this.changeDestination}
@@ -276,7 +273,6 @@ class Main extends React.Component < {}, LocationsProps> {
             // inputValue1={this.state.inputValue1}
             // inputValue2={this.state.inputValue2}
             // changeLetter={this.changeLetter}
-
           />
           <Modal
             contentClassName="font-color"

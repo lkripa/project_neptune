@@ -221,6 +221,7 @@ class Map extends React.Component {
   // Mounting map 
   componentDidMount() {
     this._isMounted = true;
+    console.log("isMounted", this._isMounted);
     if (this._isMounted) {
       // create list of city names
       this.getCityNames();
@@ -245,19 +246,18 @@ class Map extends React.Component {
   // checking if map will unmount
   componentWillUnmount() {
     this._isMounted = false;
+    console.log("isMounted", this._isMounted);
   }
 
   // Update Coordinates from FormBox onto Map
   componentDidUpdate(prevProps, prevState) {
     // Check to see if there was an update for the city name to get coordinates
     if (this.props.inputValue1 !== prevProps.inputValue1){
-      
       let coords = this.getCityCoordinates(this.props.inputValue1);
       coords != null && this.setState({points1: coords}, () => 
         console.log("points1", coords));
     }
     if (this.props.inputValue2 !== prevProps.inputValue2){
-      
       let coords = this.getCityCoordinates(this.props.inputValue2);
       coords != null && this.setState({points2: coords}, () => 
         console.log("points2", coords));
