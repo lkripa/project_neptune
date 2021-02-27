@@ -1,11 +1,12 @@
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
-import './style/Map.css';
+import '../style/Map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { destinationCityFormat, originCityFormat } from './data/cityGeoJsonFormat.js';
+import { destinationCityFormat, originCityFormat } from '../data/cityGeoJsonFormat.js';
 import { greatCircle, point } from '@turf/turf';
-import { cityCodes } from './data/cityCodes.js';
-import { accessToken } from './data/config.js';
+import { cityCodes } from '../data/cityCodes.js';
+import { accessToken } from '../data/config.js';
+
 
 /**
  * This is the Map component.
@@ -37,7 +38,7 @@ class Map extends React.Component {
     this.myRef = React.createRef();
 
     // Initial end point and will rotate through other destination points when clicked (for Map Lines)
-    this.end = point(this.state.pointDestination)//destinations.features[0].geometry.coordinates);//[9.283447, 40.078072]); // Sardinia
+    this.end = point(this.state.pointDestination)
     this.destinationGeojson = destinationCityFormat
     this.originGeojson = originCityFormat
 
@@ -124,8 +125,21 @@ class Map extends React.Component {
       // Create a div element for the marker.
       var el = document.createElement('div');
       el.className = 'marker';
+      // el.addEventListener('click', e => 
+      // { 
+      //   // Reload the newly clicked destination to show flight lines
+      //   this.props.handleShow()
+      // });
+      var popup = new mapboxgl.Popup({ offset: 25, className: 'scroll' }).setHTML(
+        `<div className="scroll">
+            <p>
+              ${marker.properties.city}
+            </p>
+        </div>`
+      );
       this.startMarker = new mapboxgl.Marker(el, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
+        .setPopup(popup)
         .addTo(this.map);
       this.markerArray.push(this.startMarker);
     });
@@ -152,26 +166,22 @@ class Map extends React.Component {
         this.end = marker.geometry.coordinates;
         this.removeStartLines();
         this.drawLines();
+        this.props.handleShow();
       });
-      var popup = new mapboxgl.Popup({ offset: 25, className: 'scroll' }).setHTML(
-        `<div className="scroll">
-            <p>
-              ${this.showListOfDates()}
-            </p>
-        </div>`
-      );
+      // var popup = new mapboxgl.Popup({ offset: 25, className: 'scroll', closeOnClick: 'false' }).setHTML(
+      //   `<div className="scroll">
+      //       <p>
+      //         From ${this.props.inputValue1} & ${this.props.inputValue2} <br />To ${marker.properties.city}
+      //         ${this.showListOfDates()}
+      //       </p>
+      //   </div>`
+      // )
       this.destinationMarker = new mapboxgl.Marker(ed, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
-        .setPopup(popup)
+        // .setPopup(popup)
         .addTo(this.map);
       this.markerArray.push(this.destinationMarker);
     });
-  }
-
-  showListOfDates = () => {
-    console.log("listOfDates:", this.props.listOfDates);
-    // Create popup for more dates
-    return this.props.listOfDates.map(elem => `<br /><a href=""> Date: ${elem.date}, Price from ${elem.totalPrice} EUR</a>`);
   }
 
   // Get city coodinates from geojson file
@@ -280,7 +290,7 @@ class Map extends React.Component {
               if (this.hasMarkers) {
                 this.removeMarkers();
               }
-              this.showListOfDates();
+              // this.showListOfDates();
               // Add new markers and lines to map
               this.addStartMarkers();
               this.addDestinationMarkers();

@@ -1,12 +1,13 @@
 import React from 'react';
-import './style/Main.css';
-import Map from './Map';
-import FormBox from './FormBox';
-import Info from './Info';
+import '../style/Main.css';
+import Map from '../components/Map';
+import FormBox from '../components/FormBox';
+import Info from '../components/Info';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
-import { serverURL } from './data/config.js';
-
+import { serverURL } from '../data/config.js';
+import { Modal, Button } from 'react-bootstrap';
+import DatesAndPrices from '../components/DatesAndPrices';
 
 
 /**
@@ -18,7 +19,7 @@ import { serverURL } from './data/config.js';
 
 // TODO: 
 //      * Create a page for the returns
-//      * Set up online server
+//      * Change to component functions
 
 interface LocationsProps {
   startCityList: string[];
@@ -30,6 +31,7 @@ interface LocationsProps {
   loading: boolean;
   destinationCity: string;
   canAPI: boolean;
+  doesModalShow: boolean;
 
   placeholderTotalPrice: string;
   placeholderPrice1: string;
@@ -41,7 +43,10 @@ interface LocationsProps {
   placeholderAirline1: string;
   placeholderAirline2: string;
   fullList: [];
-  listOfDates: string[];
+  listOfDates: {
+    date: string,
+    totalPrice: string,
+  }[];
   
 }
 
@@ -60,6 +65,7 @@ class Main extends React.Component < {}, LocationsProps> {
       loading: false,
       destinationCity: "",
       canAPI: true,
+      doesModalShow: false,
 
       placeholderTotalPrice: "TBD",
       placeholderPrice1: "TBD",
@@ -192,6 +198,20 @@ class Main extends React.Component < {}, LocationsProps> {
     return (tempList);
   }
 
+  handleClose = () => { this.setState({doesModalShow: false}, () => {console.log("modal:", this.state.doesModalShow)}) };
+  handleShow = () => { this.setState({doesModalShow: true}, () => {console.log("modal:", this.state.doesModalShow)}) };
+ 
+  // List of dates and prices for the popup
+  // showListOfDates = () => {
+  //   console.log("listOfDates:", this.state.listOfDates);
+    
+  //   // Create popup for more dates
+  //   return `<div>
+  //       ${this.state.listOfDates.map(elem => 
+  //     `<br />Date: ${elem.date}, Price from ${elem.totalPrice} EUR`)}
+  //     </div>`
+  // }
+
   // call api after user selects origin and destination cities
   componentDidUpdate() {
     if ((this.state.canAPI === true) && 
@@ -240,17 +260,41 @@ class Main extends React.Component < {}, LocationsProps> {
               />
           }
             
-        <FormBox 
-          changeStart={this.changeStart}
-          changeDestination={this.changeDestination}
-          callAPI={this.callAPI}
-          destinationCity={this.state.destinationCity}
-          startCityList={this.state.startCityList}
-          inputValue1={this.state.inputValue1}
-          inputValue2={this.state.inputValue2}
-          changeLetter={this.changeLetter}
+          <FormBox 
+            changeStart={this.changeStart}
+            changeDestination={this.changeDestination}
+            callAPI={this.callAPI}
+            destinationCity={this.state.destinationCity}
+            startCityList={this.state.startCityList}
+            inputValue1={this.state.inputValue1}
+            inputValue2={this.state.inputValue2}
+            changeLetter={this.changeLetter}
 
-        />
+          />
+          <Modal
+            contentClassName="font-color"
+            // centered={true}
+            show={this.state.doesModalShow}
+            // onHide={() => this.handleClose()}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>From {this.state.inputValue1} and {this.state.inputValue2} <br />To {this.state.destinationCity}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {/* <div className="scroll"> */}
+                <DatesAndPrices 
+                  listOfDates={this.state.listOfDates}
+                />
+              {/* </div> */}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => this.handleClose()}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
         <Map 
           updateCityList={this.updateCityList}
@@ -264,7 +308,8 @@ class Main extends React.Component < {}, LocationsProps> {
           placeholderOriginCity1={this.state.placeholderOriginCity1}
           placeholderOriginCity2={this.state.placeholderOriginCity2}
           placeholderDestination={this.state.placeholderDestination}
-          listOfDates={this.state.listOfDates}
+          // listOfDates={this.state.listOfDates}
+          handleShow={this.handleShow}
         />
       </div>
     );

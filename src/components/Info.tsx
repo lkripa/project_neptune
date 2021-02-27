@@ -1,5 +1,5 @@
 import React from 'react';
-import './style/Main.css';
+import '../style/Main.css';
 
 /**
  * This is the Info component for the flight information details of the cheapest flight.
