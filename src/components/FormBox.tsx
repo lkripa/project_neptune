@@ -9,9 +9,10 @@ import { Dropdown } from 'semantic-ui-react';
  * This is the User Form component.
  */
 
+ 
 interface FuncProps {
  changeStart(isOne: boolean, city: any): any;
- changeLetter(letter: string, person: string): any;
+//  changeLetter(letter: string, person: string): any;
  changeDestination(isOne: boolean, destinationCity: any): any;
  callAPI(): any;
  startCityList: {
@@ -19,36 +20,36 @@ interface FuncProps {
     key: string,
     value: string,
   }[];
- inputValue1: string;
- inputValue2: string;
- destinationCity: string;
+//  inputValue1: string;
+//  inputValue2: string;
+//  destinationCity: string;
 }
 
 class FormBox extends React.Component <FuncProps> {
 
   // Filter letters when user types into form
-  filter = (myInput:string) => {
-    var filterLetter: string = "";
-    var letter: string = "";
-    var a: HTMLCollectionOf<HTMLAnchorElement>;
-    let input = document.getElementById(myInput);
-    if(input) {
-      letter = (input as HTMLFormElement).value;
-      filterLetter = (input as HTMLFormElement).value.toUpperCase();
-    }
-    this.props.changeLetter(letter, myInput);
+  // filter = (myInput:string) => {
+  //   var filterLetter: string = "";
+  //   var letter: string = "";
+  //   var a: HTMLCollectionOf<HTMLAnchorElement>;
+  //   let input = document.getElementById(myInput);
+  //   if(input) {
+  //     letter = (input as HTMLFormElement).value;
+  //     filterLetter = (input as HTMLFormElement).value.toUpperCase();
+  //   }
+  //   this.props.changeLetter(letter, myInput);
     
-    let divd = document.getElementById("myDropdown");
-    a = (divd as HTMLFormElement).getElementsByTagName("a");
-    for (let i:number  = 0; i < a.length; i++) {
-      var txtValue:string = a[i].textContent || a[i].innerText;
-      if ((txtValue.toUpperCase().indexOf(filterLetter) > -1) && (filterLetter.length >= 3) ){
-        a[i].style.display = "";
-      } else {
-        a[i].style.display = "none";
-      }
-    }
-  }
+  //   let divd = document.getElementById("myDropdown");
+  //   a = (divd as HTMLFormElement).getElementsByTagName("a");
+  //   for (let i:number  = 0; i < a.length; i++) {
+  //     var txtValue:string = a[i].textContent || a[i].innerText;
+  //     if ((txtValue.toUpperCase().indexOf(filterLetter) > -1) && (filterLetter.length >= 3) ){
+  //       a[i].style.display = "";
+  //     } else {
+  //       a[i].style.display = "none";
+  //     }
+  //   }
+  // }
   
   render() {
     return (
@@ -64,9 +65,12 @@ class FormBox extends React.Component <FuncProps> {
                   className='icon'
                   icon='search'
                   selectOnNavigation={false}
+                  lazyLoad
+                  // loading
                   fluid
                   search
                   selection
+                  minCharacters={3}
                   options={this.props.startCityList}
                   onChange={ (_, data) => this.props.changeStart(true, data.value) }
                   onClick={() => this.props.callAPI()}
@@ -104,9 +108,12 @@ class FormBox extends React.Component <FuncProps> {
                   className='icon'
                   icon='search'
                   selectOnNavigation={false}
+                  lazyLoad
+                  // loading
                   fluid
                   search
                   selection
+                  minCharacters={3}
                   options={this.props.startCityList}
                   onChange={ (_, data) => this.props.changeStart(false, data.value) }
                   onClick={() => this.props.callAPI()}
@@ -147,9 +154,12 @@ class FormBox extends React.Component <FuncProps> {
                   className='icon'
                   icon='search'
                   selectOnNavigation={false}
+                  lazyLoad
+                  // loading
                   fluid
                   search
                   selection
+                  minCharacters={3}
                   options={this.props.startCityList}
                   onChange={(_, data) => this.props.changeDestination(true, data.value)}
                   onClick={() => this.props.callAPI()}

@@ -271,11 +271,11 @@ class Main extends React.Component < {}, LocationsProps> {
             changeStart={this.changeStart}
             changeDestination={this.changeDestination}
             callAPI={this.callAPI}
-            destinationCity={this.state.destinationCity}
+            // destinationCity={this.state.destinationCity}
             startCityList={this.state.startCityList}
-            inputValue1={this.state.inputValue1}
-            inputValue2={this.state.inputValue2}
-            changeLetter={this.changeLetter}
+            // inputValue1={this.state.inputValue1}
+            // inputValue2={this.state.inputValue2}
+            // changeLetter={this.changeLetter}
 
           />
           <Modal
