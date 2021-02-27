@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, FormControl, Dropdown, Container, Row, Col } from 'react-bootstrap'; 
+import { Container, Row, Col } from 'react-bootstrap'; 
 import '../style/FormBox.css';
-import Menu from './Menu';
+// import Menu from './Menu';
+import { Dropdown } from 'semantic-ui-react';
 
 
 /**
@@ -9,11 +10,15 @@ import Menu from './Menu';
  */
 
 interface FuncProps {
- changeStart(isOne: boolean, city: string): any;
+ changeStart(isOne: boolean, city: any): any;
  changeLetter(letter: string, person: string): any;
- changeDestination(isOne: boolean, destinationCity: string): any;
+ changeDestination(isOne: boolean, destinationCity: any): any;
  callAPI(): any;
- startCityList: string[];
+ startCityList: {
+    text: string, 
+    key: string,
+    value: string,
+  }[];
  inputValue1: string;
  inputValue2: string;
  destinationCity: string;
@@ -47,12 +52,26 @@ class FormBox extends React.Component <FuncProps> {
   
   render() {
     return (
-      <div>
-        <Form inline>
-          <Container id="myDropdown">
+      <div className="outer">
+        {/* <Form inline> */}
+          <Container fluid={true} className="myDropdown">
             <Row>
-              <Col>
-                <Dropdown className="padding">
+              <Col className="padding">
+                <Dropdown
+                  id="myInput"
+                  type="text"
+                  placeholder="Airport 1"
+                  className='icon'
+                  icon='search'
+                  selectOnNavigation={false}
+                  fluid
+                  search
+                  selection
+                  options={this.props.startCityList}
+                  onChange={ (_, data) => this.props.changeStart(true, data.value) }
+                  onClick={() => this.props.callAPI()}
+                />
+                {/* <Dropdown className="padding">
                   <Dropdown.Toggle variant="info" id="dropdown-basic">
                     <FormControl 
                       type="text" 
@@ -75,10 +94,24 @@ class FormBox extends React.Component <FuncProps> {
                       //startCity={this.props.startCity}
                     />
                   }
-                </Dropdown>
+                </Dropdown> */}
             </Col>
-            <Col>
-            <Dropdown className="padding">
+            <Col className="padding">
+            <Dropdown
+                  id="myInput2"
+                  type="text"
+                  placeholder="Airport 2"
+                  className='icon'
+                  icon='search'
+                  selectOnNavigation={false}
+                  fluid
+                  search
+                  selection
+                  options={this.props.startCityList}
+                  onChange={ (_, data) => this.props.changeStart(false, data.value) }
+                  onClick={() => this.props.callAPI()}
+                />
+            {/* <Dropdown className="padding">
                 <Dropdown.Toggle variant="info" id="dropdown-basic">
                  <FormControl 
                   type="text" 
@@ -102,12 +135,26 @@ class FormBox extends React.Component <FuncProps> {
                     //startCity={this.props.startCity}
                   />
                 }
-            </Dropdown>
+            </Dropdown> */}
             </Col>
             </Row>
             <Row>
-            <Col>
-            <Dropdown className="padding">
+            <Col className="padding">
+            <Dropdown
+                  id="myInput3"
+                  type="text"
+                  placeholder="Destination"
+                  className='icon'
+                  icon='search'
+                  selectOnNavigation={false}
+                  fluid
+                  search
+                  selection
+                  options={this.props.startCityList}
+                  onChange={(_, data) => this.props.changeDestination(true, data.value)}
+                  onClick={() => this.props.callAPI()}
+                />
+            {/* <Dropdown className="padding">
                 <Dropdown.Toggle variant="info" id="dropdown-basic">
                  <FormControl 
                   type="text" 
@@ -128,11 +175,11 @@ class FormBox extends React.Component <FuncProps> {
                     callAPI={this.props.callAPI}
                   />
                 }
-            </Dropdown>
+            </Dropdown> */}
             </Col>
             </Row>
           </Container>
-        </Form>
+        {/* </Form> */}
       </div>
     );
   }

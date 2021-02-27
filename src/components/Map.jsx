@@ -4,8 +4,8 @@ import '../style/Map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { destinationCityFormat, originCityFormat } from '../data/cityGeoJsonFormat.js';
 import { greatCircle, point } from '@turf/turf';
-import { cityCodes } from '../data/cityCodes.js';
 import { accessToken } from '../data/config.js';
+import { cityCodes } from '../data/cityCodes.js';
 
 
 /**
@@ -180,6 +180,21 @@ class Map extends React.Component {
       this.markerArray.push(this.destinationMarker);
     });
   }
+  // Get full list of viable city names
+  getCityNames = () => {
+    // const numberCities = cityCodes.features.length;
+    const newCityList = cityCodes.features;
+    newCityList.forEach(newCity => {
+      if (!(this.demoCityList).find(elem => elem.text === newCity.properties.city_user )) {
+        this.demoCityList.push({
+          "text": newCity.properties.city_user , 
+          "key": newCity.properties.city_user , 
+          "value": newCity.properties.city_user 
+        });
+      }
+    })
+    this.props.updateCityList(this.demoCityList);
+  };
 
   // Get city coodinates from geojson file
   getCityCoordinates = (cityName) => {
@@ -202,18 +217,6 @@ class Map extends React.Component {
     }
     return coords
   }
-
-  // get list of viable city names from user input
-  getCityNames = () => {
-    var numberCities = cityCodes.features.length;
-    for (var i = 0; i < numberCities; i++) {
-      var newCity = cityCodes.features[i].properties['city_user'];
-      if (!this.demoCityList.includes(newCity)) {
-        this.demoCityList.push(newCity);
-      }
-    }
-    this.props.updateCityList(this.demoCityList);
-  };
 
   // Mounting map 
   componentDidMount() {

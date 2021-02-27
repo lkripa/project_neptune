@@ -8,7 +8,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import { serverURL } from '../data/config.js';
 import { Modal, Button } from 'react-bootstrap';
 import DatesAndPrices from '../components/DatesAndPrices';
-import { Dropdown } from 'semantic-ui-react';
+
+
 
 
 /**
@@ -24,7 +25,11 @@ import { Dropdown } from 'semantic-ui-react';
 //      * When you click on the date, you navigate to another modal with the details of the flight appear
 
 interface LocationsProps {
-  startCityList: string[];
+  startCityList: {
+    text: string, 
+    key: string,
+    value: string,
+  }[];
   startCityName: string;
   inputValue1: string;
   inputValue2: string;
@@ -114,7 +119,7 @@ class Main extends React.Component < {}, LocationsProps> {
   }
 
   // checks for valid cities to show on menu selection
-  updateCityList = (onlyCityList: string[]) => {
+  updateCityList = (onlyCityList: { text: string, key: string, value: string}[]) => {
     this.setState({startCityList: onlyCityList})
   }
 

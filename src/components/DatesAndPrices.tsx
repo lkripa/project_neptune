@@ -18,8 +18,8 @@ class DatesAndPrices extends React.Component <FuncProps> {
     return (
       <div className="scroll">
         <ul className="no-bullets">
-        {this.props.listOfDates.map(elem => (
-          <li>
+        {this.props.listOfDates.map((elem, index) => (
+          <li key={index}>
             <Button variant="link" onClick={() => console.log(elem.date)}>
               Total Price from {elem.totalPrice} EUR on <b>{elem.date}</b>
             </Button>
