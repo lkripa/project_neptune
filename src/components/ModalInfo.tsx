@@ -38,7 +38,7 @@ class ModalInfo extends React.Component <LocationsProps> {
                 <br /> Price from {this.props.placeholderOriginCity2} to {this.props.placeholderDestination}: {elem.price_2} EUR 
                   on {elem.carrier_2}
               </p>
-            : <></>
+            : <p key={index}></p>
         )}
       </div>
     );

@@ -20,6 +20,7 @@ import DatesAndPrices from '../components/DatesAndPrices';
 //      * When I re-click on the city, clear value (last)
 //      * Create a page for the returns
 //      * Change to component functions
+//      * If wait time is longer than 15 seconds, let the user know the wait will be 1 minute.
 
 interface LocationsProps {
   startCityList: {
@@ -56,8 +57,9 @@ interface LocationsProps {
 }
 
 class Main extends React.Component < {}, LocationsProps> {
-
-
+  startTimer = 0
+  stopTimer = 0
+  totalTime = 15
   constructor(props:LocationsProps) {
     super(props);
     this.state = {
@@ -86,6 +88,7 @@ class Main extends React.Component < {}, LocationsProps> {
       listOfDates: [],
     }
   }
+
   // change origin cities for API Call
   changeStart = (isOne: boolean, city: string) => {
     // this.setState({startCityName: city})
@@ -122,26 +125,6 @@ class Main extends React.Component < {}, LocationsProps> {
     this.setState({startCityList: onlyCityList})
   }
 
-  // in formbox, the state is changed for every letter typed
-  // changeLetter = (letter: string, person: string) => {
-  //   if (person === "myInput") {
-  //     this.setState({
-  //       inputValue1: letter
-  //     })
-  //     console.log(this.state.inputValue1);
-  //   } else if (person === "myInput2") {
-  //     this.setState({
-  //       inputValue2: letter
-  //     })
-  //     console.log(this.state.inputValue2);
-  //   } else {
-  //     this.setState({
-  //       destinationCity: letter
-  //     })
-  //     console.log(this.state.destinationCity);
-  //   }
-  // }
-
   // when form block clicked, api can be called
   callAPI = () => {
     this.setState({ 
@@ -172,19 +155,26 @@ class Main extends React.Component < {}, LocationsProps> {
             })
           }
           this.setState({
-            loading: false,
-            placeholderTotalPrice: (data.data[0].total_price),
-            placeholderPrice1: (data.data[0].price_1),
-            placeholderPrice2: (data.data[0].price_2),
-            placeholderDate: (data.data[0].date_1),
-            placeholderOriginCity1: (data.data[0].origin_city_name_1),
-            placeholderOriginCity2:(data.data[0].origin_city_name_2),
-            placeholderDestination:(data.data[0].dest_city_name_1),
-            placeholderAirline1: (data.data[0].carrier_1),
-            placeholderAirline2: (data.data[0].carrier_2),
-            fullList: data.data,
-            info: "show",
-          })
+              loading: false,
+              placeholderTotalPrice: (data.data[0].total_price),
+              placeholderPrice1: (data.data[0].price_1),
+              placeholderPrice2: (data.data[0].price_2),
+              placeholderDate: (data.data[0].date_1),
+              placeholderOriginCity1: (data.data[0].origin_city_name_1),
+              placeholderOriginCity2:(data.data[0].origin_city_name_2),
+              placeholderDestination:(data.data[0].dest_city_name_1),
+              placeholderAirline1: (data.data[0].carrier_1),
+              placeholderAirline2: (data.data[0].carrier_2),
+              fullList: data.data,
+              info: "show",
+            }, () => {
+              this.stopTimer = Date.now();
+              let timeTimer = this.stopTimer - this.startTimer;
+              let minutes = ("0" + (Math.floor(timeTimer /60000) % 60)).slice(-2);
+              let seconds = ("0" + (Math.floor(timeTimer /1000) % 60)).slice(-2);
+              console.log("TIMER: ", minutes, ":", seconds);
+            }
+          )
           this.setState({listOfDates: this.sortDates(this.state.fullList)})
         }).catch((error) => {
           console.log("error: ", error);
@@ -193,6 +183,7 @@ class Main extends React.Component < {}, LocationsProps> {
       });
     });
   }
+
   // take the full list and add the unique dates to the listOfDates list
   sortDates = (fullList: any[]) => {
     let tempList: any[] = []
@@ -206,43 +197,40 @@ class Main extends React.Component < {}, LocationsProps> {
     return (tempList);
   }
 
+  // change the date after selection on modal
   changeDate = (date: string) => {
     this.setState({ 
       chosenDate: date,
     })
   }
 
+  // close the modal
   handleClose = () => { 
     this.setState({
       doesModalShow: false,
       chosenDate: "",
     })
   };
-
+  
+  // open the modal for more flight dates
   handleShow = () => { 
     this.setState({doesModalShow: true}) 
   };
- 
-  // List of dates and prices for the popup
-  // showListOfDates = () => {
-  //   console.log("listOfDates:", this.state.listOfDates);
-    
-  //   // Create popup for more dates
-  //   return `<div>
-  //       ${this.state.listOfDates.map(elem => 
-  //     `<br />Date: ${elem.date}, Price from ${elem.totalPrice} EUR`)}
-  //     </div>`
-  // }
 
   // call api after user selects origin and destination cities
   componentDidUpdate() {
     if ((this.state.canAPI === true) && 
        ((this.state.inputValueArray[0] !== "") && (this.state.inputValueArray[1] !== "") && (this.state.inputValueArray[2] !== ""))
     ){
-      this.setState({ canAPI: false, loading: true, })
+      this.setState({ canAPI: false, loading: true, });
       this.postAPI();
       console.log("=== API CALLED ===")  
     }
+
+    if (this.state.loading === true) {
+      this.startTimer = Date.now()
+    }
+    
   }
 
   render() {
