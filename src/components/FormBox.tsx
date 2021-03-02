@@ -26,7 +26,6 @@ interface FuncProps {
 }
 
 class FormBox extends React.Component <FuncProps> {
-
   // Filter letters when user types into form
   // filter = (myInput:string) => {
   //   var filterLetter: string = "";
@@ -66,14 +65,17 @@ class FormBox extends React.Component <FuncProps> {
                   icon='search'
                   selectOnNavigation={false}
                   lazyLoad
-                  // loading
                   fluid
                   search
                   selection
+                  clearable
                   minCharacters={3}
                   options={this.props.startCityList}
                   onChange={ (_, data) => this.props.changeStart(true, data.value) }
-                  onClick={() => this.props.callAPI()}
+                  onClick={() => {
+                    this.props.callAPI(); 
+                    this.props.changeStart(true, "");
+                  }}
                 />
                 {/* <Dropdown className="padding">
                   <Dropdown.Toggle variant="info" id="dropdown-basic">
@@ -109,14 +111,17 @@ class FormBox extends React.Component <FuncProps> {
                   icon='search'
                   selectOnNavigation={false}
                   lazyLoad
-                  // loading
                   fluid
                   search
                   selection
+                  clearable
                   minCharacters={3}
                   options={this.props.startCityList}
                   onChange={ (_, data) => this.props.changeStart(false, data.value) }
-                  onClick={() => this.props.callAPI()}
+                  onClick={() => {
+                    this.props.callAPI();
+                    this.props.changeStart(false, "");
+                  }}
                 />
             {/* <Dropdown className="padding">
                 <Dropdown.Toggle variant="info" id="dropdown-basic">
@@ -155,14 +160,17 @@ class FormBox extends React.Component <FuncProps> {
                   icon='search'
                   selectOnNavigation={false}
                   lazyLoad
-                  // loading
                   fluid
                   search
                   selection
+                  clearable
                   minCharacters={3}
                   options={this.props.startCityList}
                   onChange={(_, data) => this.props.changeDestination(true, data.value)}
-                  onClick={() => this.props.callAPI()}
+                  onClick={() => {
+                    this.props.callAPI(); 
+                    this.props.changeDestination(true, "")
+                  }}
                 />
             {/* <Dropdown className="padding">
                 <Dropdown.Toggle variant="info" id="dropdown-basic">

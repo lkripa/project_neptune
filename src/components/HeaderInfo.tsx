@@ -18,7 +18,7 @@ interface LocationsProps {
   placeholderAirline2: string;
 }
 
-class Info extends React.Component <LocationsProps> {
+class HeaderInfo extends React.Component <LocationsProps> {
 
   render() {
     return (
@@ -36,4 +36,4 @@ class Info extends React.Component <LocationsProps> {
   }
 }
 
-export default Info;
+export default HeaderInfo;

@@ -2,7 +2,8 @@ import React from 'react';
 import '../style/Main.css';
 import Map from '../components/Map';
 import FormBox from '../components/FormBox';
-import Info from '../components/Info';
+import HeaderInfo from '../components/HeaderInfo';
+import ModalInfo from '../components/ModalInfo';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
 import { serverURL } from '../data/config.js';
@@ -14,13 +15,11 @@ import DatesAndPrices from '../components/DatesAndPrices';
  * This is the Main component of the App.
  */
 
-// ? Check for this error : Proxy error: Could not proxy request /cityPost from localhost:3000 to http://127.0.0.1:5000/.
-// ? See https://nodejs.org/api/errors.html#errors_common_system_errors for more information (ECONNRESET).
 
 // TODO: 
+//      * When I re-click on the city, clear value (last)
 //      * Create a page for the returns
 //      * Change to component functions
-//      * When you click on the date, you navigate to another modal with the details of the flight appear
 
 interface LocationsProps {
   startCityList: {
@@ -37,6 +36,7 @@ interface LocationsProps {
   destinationCity: string;
   canAPI: boolean;
   doesModalShow: boolean;
+  chosenDate: string;
 
   placeholderTotalPrice: string;
   placeholderPrice1: string;
@@ -71,6 +71,7 @@ class Main extends React.Component < {}, LocationsProps> {
       destinationCity: "",
       canAPI: true,
       doesModalShow: false,
+      chosenDate: "",
 
       placeholderTotalPrice: "TBD",
       placeholderPrice1: "TBD",
@@ -187,6 +188,7 @@ class Main extends React.Component < {}, LocationsProps> {
           this.setState({listOfDates: this.sortDates(this.state.fullList)})
         }).catch((error) => {
           console.log("error: ", error);
+          this.setState({loading:false});
           alert("Unfortunately, no flights were found. Please try again.");
       });
     });
@@ -194,6 +196,7 @@ class Main extends React.Component < {}, LocationsProps> {
   // take the full list and add the unique dates to the listOfDates list
   sortDates = (fullList: any[]) => {
     let tempList: any[] = []
+    console.log(fullList);
     fullList.forEach((entry: any, index: Number) => {
       if (!(tempList.find(elem => elem.date === entry.date_1))) {
         tempList.push({ "date": entry.date_1, "totalPrice": entry.total_price })
@@ -203,8 +206,22 @@ class Main extends React.Component < {}, LocationsProps> {
     return (tempList);
   }
 
-  handleClose = () => { this.setState({doesModalShow: false}, () => {console.log("modal:", this.state.doesModalShow)}) };
-  handleShow = () => { this.setState({doesModalShow: true}, () => {console.log("modal:", this.state.doesModalShow)}) };
+  changeDate = (date: string) => {
+    this.setState({ 
+      chosenDate: date,
+    })
+  }
+
+  handleClose = () => { 
+    this.setState({
+      doesModalShow: false,
+      chosenDate: "",
+    })
+  };
+
+  handleShow = () => { 
+    this.setState({doesModalShow: true}) 
+  };
  
   // List of dates and prices for the popup
   // showListOfDates = () => {
@@ -245,13 +262,15 @@ class Main extends React.Component < {}, LocationsProps> {
           >
             Learn how the code works...
           </a>
-          {this.state.loading ? 
-            <div className="small">
-              <Spinner animation="grow" className="small"/>
-              <Spinner animation="grow" className="small"/>
-              <Spinner animation="grow" className="small"/>
-            </div>
-             : <Info 
+          {this.state.loading 
+            ? 
+              <div className="small">
+                <Spinner animation="grow" className="small"/>
+                <Spinner animation="grow" className="small"/>
+                <Spinner animation="grow" className="small"/>
+              </div>
+            : 
+              <HeaderInfo 
                 info = {this.state.info}
                 placeholderTotalPrice={this.state.placeholderTotalPrice}
                 placeholderPrice1={this.state.placeholderPrice1}
@@ -268,11 +287,10 @@ class Main extends React.Component < {}, LocationsProps> {
             changeStart={this.changeStart}
             changeDestination={this.changeDestination}
             callAPI={this.callAPI}
-            // destinationCity={this.state.destinationCity}
             startCityList={this.state.startCityList}
             // inputValue1={this.state.inputValue1}
             // inputValue2={this.state.inputValue2}
-            // changeLetter={this.changeLetter}
+            // destinationCity={this.state.destinationCity}
           />
           <Modal
             contentClassName="font-color"
@@ -287,12 +305,43 @@ class Main extends React.Component < {}, LocationsProps> {
             </Modal.Header>
             <Modal.Body>
               {/* <div className="scroll"> */}
-                <DatesAndPrices 
-                  listOfDates={this.state.listOfDates}
-                />
+              {(this.state.chosenDate === "") 
+                ?
+                  <DatesAndPrices 
+                    listOfDates={this.state.listOfDates}
+                    changeDate={this.changeDate}
+                  />
+                :
+                  <ModalInfo 
+                    // info = {this.state.info}
+                    fullList = {this.state.fullList}
+                    // placeholderTotalPrice={this.state.placeholderTotalPrice}
+                    // placeholderPrice1={this.state.placeholderPrice1}
+                    // placeholderPrice2={this.state.placeholderPrice2}
+                    placeholderDate={this.state.chosenDate}
+                    placeholderOriginCity1={this.state.placeholderOriginCity1}
+                    placeholderOriginCity2={this.state.placeholderOriginCity2}
+                    placeholderDestination={this.state.placeholderDestination}
+                    // placeholderAirline1={this.state.placeholderAirline1}
+                    // placeholderAirline2={this.state.placeholderAirline2}
+                    changeDate={this.changeDate}
+                  />
+              }
               {/* </div> */}
             </Modal.Body>
             <Modal.Footer>
+              {(this.state.chosenDate === "") 
+                ?
+                  <> </>
+                : 
+                  <Button 
+                    onClick={() => {
+                        this.changeDate("");
+                    }}
+                  >
+                    Back
+                  </Button> 
+              }
               <Button variant="secondary" onClick={() => this.handleClose()}>
                 Close
               </Button>
